@@ -1,10 +1,13 @@
 name: Construire l'APK Esteti-Ma
 on:
+  push:
+    branches: [main]
+    paths: ["frontend/**", ".github/workflows/apk.yml"]
   workflow_dispatch:
     inputs:
       api_url:
-        description: "Adresse de l'API (ex. https://esteti-ma-api.onrender.com)"
-        required: true
+        description: "Adresse de l'API (par défaut : https://esteti-ma-api.onrender.com)"
+        required: false
 permissions:
   contents: write
 jobs:
@@ -22,7 +25,7 @@ jobs:
       - run: npm install
       - run: npm run build
         env:
-          VITE_API_URL: ${{ inputs.api_url }}
+          VITE_API_URL: ${{ inputs.api_url || 'https://esteti-ma-api.onrender.com' }}
       - run: npx cap sync android
       - run: chmod +x android/gradlew && ./gradlew assembleDebug
         working-directory: frontend/android
