@@ -1,7 +1,10 @@
-import { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { FormEvent, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
 export default function Login() {
+  // Accès discret à l'espace administrateur : 5 touches rapides sur le nom « Esteti-Ma »
+  const nav = useNavigate(); const taps = useRef({ n: 0, t: 0 });
+  const secret = () => { const now = Date.now(), k = taps.current; k.n = now - k.t < 1500 ? k.n + 1 : 1; k.t = now; if (k.n >= 5) { k.n = 0; nav("/admin/login"); } };
   const [f, setF] = useState({ name: "", phone: "", password: "", role: "client" });
   const [signup, setSignup] = useState(false); const [show, setShow] = useState(false); const [ok, setOk] = useState(false); const [busy, setBusy] = useState(false); const [err, setErr] = useState("");
   const set = (k: string) => (e: { target: { value: string } }) => setF({ ...f, [k]: e.target.value });
@@ -14,7 +17,7 @@ export default function Login() {
       localStorage.setItem("token", r.token); localStorage.setItem("role", r.role); window.location.href = "/";
     } catch (e) { setErr((e as Error).message); setBusy(false); }
   };
-  return (<main className="auth"><h1 className="wordmark">Esteti-Ma</h1><p className="muted">La beauté et les soins esthétiques à portée de main.</p>
+  return (<main className="auth"><h1 className="wordmark" onClick={secret}>Esteti-Ma</h1><p className="muted">La beauté et les soins esthétiques à portée de main.</p>
     <form onSubmit={submit}>
       {signup && <div className="seg" role="group" aria-label="Type de compte">{[["client", "Je cherche un professionnel"], ["stylist", "Je suis professionnel(le)"]].map(([v, l]) =>
         <button type="button" key={v} className={f.role === v ? "on" : ""} onClick={() => setF({ ...f, role: v })}>{l}</button>)}</div>}
