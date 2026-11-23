@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: esteti-ma-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: node dist/index.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: DATABASE_URL
+        sync: false          # à coller : l'adresse de connexion Neon
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://localhost,capacitor://localhost,http://localhost
+      - key: PUBLIC_URL
+        sync: false          # ex. https://esteti-ma-api.onrender.com
+      - key: COMMISSION_RATE
+        value: "0.10"

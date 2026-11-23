@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+backend/uploads
+backend/private
+frontend/android/build
+frontend/android/app/build
+frontend/android/.gradle
+frontend/android/local.properties
+frontend/android/app/src/main/assets/public

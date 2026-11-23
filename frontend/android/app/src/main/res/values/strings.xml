@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Esteti-Ma</string>
+    <string name="title_activity_main">Esteti-Ma</string>
+    <string name="package_name">com.estetima.app</string>
+    <string name="custom_url_scheme">com.estetima.app</string>
+</resources>
