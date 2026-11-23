@@ -43,7 +43,7 @@ L'API GitHub publique fonctionne sans jeton :
 - Dans le workflow, `./gradlew` s'exécute dans `frontend/android` (le chemin est relatif à ce dossier).
 - L'APK pointe vers l'API grâce à `VITE_API_URL` (par défaut `https://esteti-ma-api.onrender.com` dans le workflow). Sur le site web, la variable est vide (même adresse).
 - Les adresses de photos sont complètes : elles utilisent `PUBLIC_URL` (variable Render) ; l'appli Android est sur `https://localhost` : `CORS_ORIGIN` doit contenir `https://localhost,capacitor://localhost,http://localhost`.
-- L'espace administrateur n'est lié nulle part dans l'interface : sur l'appli Android, toucher **5 fois rapidement le nom « Esteti-Ma »** sur l'écran de connexion ; sur le web, aller sur `/admin/login`.
+- L'espace administrateur n'est lié nulle part dans l'interface : sur l'appli Android, toucher **5 fois rapidement le logo** sur l’écran de connexion ; sur le web, aller sur `/admin/login`.
 - Un numéro de téléphone ne peut avoir qu'un seul compte (client, professionnelle ou admin) et son type ne change pas. Les numéros sont enregistrés tels que saisis (ex. `0799506172`), sans normalisation.
 - Créer un administrateur : hacher le mot de passe avec `bcryptjs` (coût 12, au moins 10 caractères), puis `INSERT INTO users(role,name,phone,password_hash) VALUES('admin',...)` sur Neon. Ne jamais créer d'admin avec un mot de passe faible.
 - Les nouvelles professionnelles ne sont visibles qu'après **validation par l'admin** (`stylists.approved`). La certification (badge) est facultative.

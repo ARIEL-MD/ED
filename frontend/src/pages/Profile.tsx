@@ -31,8 +31,8 @@ export default function Profile() {
     {!stylist && <Link className="pcard" to="/favorites"><div className="pinfo"><b>Mes favoris</b><div className="muted">Les professionnels que vous aimez</div></div><span className="pill">Voir</span></Link>}
     <h2>Mon profil</h2><label className="fl">Nom<input value={u.name} onChange={e => setU({ ...u, name: e.target.value })} /></label><label className="fl">Téléphone<input value={u.phone} disabled /></label><p className="muted">Le numéro de téléphone ne peut pas être modifié.</p>
     <button onClick={() => run(() => api("/me", { method: "PATCH", body: JSON.stringify({ name: u.name }) }), "Profil enregistré")}>Enregistrer</button>
-    <div className="sec"><h3>Faire une réclamation</h3><textarea rows={3} value={c} onChange={e => setC(e.target.value)} placeholder="Décrivez le problème" />
-      <p></p><button className="ghost" onClick={() => run(async () => { await api("/me/complaints", { method: "POST", body: JSON.stringify({ body: c }) }); setC(""); }, "Réclamation envoyée")}>Envoyer</button></div>
+    {localStorage.getItem("role") !== "admin" && <div className="sec"><h3>Faire une réclamation</h3><textarea rows={3} value={c} onChange={e => setC(e.target.value)} placeholder="Décrivez le problème" />
+      <p></p><button className="ghost" onClick={() => run(async () => { await api("/me/complaints", { method: "POST", body: JSON.stringify({ body: c }) }); setC(""); }, "Réclamation envoyée")}>Envoyer</button></div>}
     <div className="sec"><h3>Informations légales</h3><Link className="row todo" to="/conditions"><span>Conditions d’utilisation</span><span>›</span></Link><Link className="row todo" to="/confidentialite"><span>Politique de confidentialité</span><span>›</span></Link></div>
     <button className="ghost" onClick={async () => { if (await ask("Se déconnecter ?", "Se déconnecter")) { localStorage.clear(); window.location.href = "/login"; } }}>Se déconnecter</button></main>);
 }
