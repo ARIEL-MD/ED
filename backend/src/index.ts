@@ -2,6 +2,7 @@ import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import fs from "fs";
+import path from "path";
 import rateLimit from "express-rate-limit";
 import { db, notify } from "./db";
 import { authRoutes } from "./routes/users";
@@ -17,7 +18,7 @@ import { meRoutes } from "./routes/me";
 import { manageRoutes } from "./routes/manage";
 const app = express();
 fs.mkdirSync("uploads", { recursive: true });
-app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
+app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" }, contentSecurityPolicy: { useDefaults: true, directives: { "img-src": ["'self'", "data:", "blob:", "https:"] } } }));
 app.set("trust proxy", 1);   // derrière le proxy de Render
 app.use(cors({ origin: (process.env.CORS_ORIGIN || "").split(",").map(x => x.trim()).filter(Boolean) }));
 app.use("/api/payments/webhook", express.raw({ type: "*/*" }));   // corps brut pour la signature
@@ -36,6 +37,13 @@ app.use("/api/manage", manageRoutes);
 app.use("/api/admin-auth", rateLimit({ windowMs: 15 * 60_000, limit: 10 }), adminAuthRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin", admin2Routes);
+app.get("/health", (_q, res) => res.json({ ok: true }));
+// Site web : l'application (frontend/dist) est servie par la même adresse que l'API
+const WEB = path.resolve(__dirname, "../../frontend/dist");
+if (fs.existsSync(WEB)) {
+  app.use(express.static(WEB, { index: false, maxAge: "1h" }));
+  app.get(/^\/(?!api\/|uploads\/).*/, (_q, res) => res.sendFile(path.join(WEB, "index.html")));
+}
 app.use((e: Error, _q: express.Request, res: express.Response, _n: express.NextFunction) => { console.error(e); res.status(500).json({ error: "Erreur serveur" }); });
 // Rappels : 2 h avant chaque rendez-vous accepté
 setInterval(async () => {
@@ -45,5 +53,4 @@ setInterval(async () => {
   } catch (e) { console.error(e); }
 }, 5 * 60_000);
 const PORT = Number(process.env.PORT) || 3000;
-app.get("/health", (_q, res) => res.json({ ok: true }));
 app.listen(PORT, () => console.log("Esteti-Ma API :" + PORT));
