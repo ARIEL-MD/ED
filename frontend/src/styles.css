@@ -305,3 +305,4 @@ button:active,.pcard:active,.quick a:active,.cat:active,.card:active,.menu a:act
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
 .two2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.two2 .fl{min-width:0}
+.loc1{font-size:13px;margin-top:2px}

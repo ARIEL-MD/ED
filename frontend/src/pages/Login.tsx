@@ -1,3 +1,4 @@
+import { Villes } from "../villes";
 import { FormEvent, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
@@ -13,7 +14,7 @@ export default function Login() {
   const submit = async (e: FormEvent) => {
     e.preventDefault(); setErr("");
     if (signup && !ok) return setErr("Merci d’accepter les conditions d’utilisation.");
-    if (signup && f.role === "stylist" && (!f.city.trim() || !f.district.trim())) return setErr("Indiquez votre ville et précisément votre lieu ou quartier.");
+    if (signup && (!f.city.trim() || !f.district.trim())) return setErr("Indiquez votre ville et précisément votre lieu ou quartier.");
     setBusy(true);
     try {
       const r = await api<{ token: string; role: string }>(signup ? "/auth/register" : "/auth/login", { method: "POST", body: JSON.stringify(signup ? { name: `${f.first.trim()} ${f.last.trim()}`.trim(), phone: f.phone.replace(/\s/g, ""), password: f.password, role: f.role, city: f.city.trim(), district: f.district.trim(), salonName: f.salon.trim() } : { phone: f.phone.replace(/\s/g, ""), password: f.password }) });
@@ -25,8 +26,9 @@ export default function Login() {
       {signup && <div className="roles" role="group" aria-label="Type de compte">{([["client", "Je cherche", "Réservez une prestation près de vous", "M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0"], ["stylist", "Je propose", "Recevez des clientes et gérez vos rendez-vous", "M3.5 5a2.5 2.5 0 105 0 2.5 2.5 0 10-5 0zM3.5 19a2.5 2.5 0 105 0 2.5 2.5 0 10-5 0zM8 6.5L21 18M8 17.5L21 6"]] as const).map(([v, t, sub, ic]) =>
         <button type="button" key={v} className={"rc" + (f.role === v ? " on" : "")} aria-pressed={f.role === v} onClick={() => setF({ ...f, role: v })}><svg viewBox="0 0 24 24"><path d={ic} /></svg><b>{t}</b><small>{sub}</small></button>)}</div>}
       {signup && <div className="two2"><label className="fl">Nom<input placeholder="Votre nom" autoComplete="family-name" value={f.last} onChange={set("last")} required /></label><label className="fl">Prénom<input placeholder="Votre prénom" autoComplete="given-name" value={f.first} onChange={set("first")} required /></label></div>}
-      {signup && f.role === "stylist" && <><label className="fl">Nom du salon (facultatif)<input placeholder="Ex. Salon Belle Étoile" value={f.salon} onChange={set("salon")} maxLength={120} /></label>
-        <div className="two2"><label className="fl">Ville<input placeholder="Ex. Abidjan, Bouaké, Korhogo…" value={f.city} onChange={set("city")} required /></label><label className="fl">Lieu, quartier précis<input placeholder="Ex. Cocody Angré" value={f.district} onChange={set("district")} maxLength={120} required /></label></div></>}
+      {signup && f.role === "stylist" && <label className="fl">Nom du salon (facultatif)<input placeholder="Ex. Salon Belle Étoile" value={f.salon} onChange={set("salon")} maxLength={120} /></label>}
+      {signup && <><Villes /><label className="fl">Ville<input list="villes" placeholder="Choisissez ou tapez votre ville" value={f.city} onChange={set("city")} required /></label>
+        <label className="fl">Lieu, quartier précis<input placeholder="Ex. Morofé, côté CAFOP" value={f.district} onChange={set("district")} maxLength={120} required /></label></>}
       <label className="fl">Téléphone<div className={"pf" + (phoneBad ? " bad" : "")}>{!f.phone.startsWith("+") && <span className="pre">+225</span>}<input placeholder="Votre numéro" type="tel" inputMode="tel" autoComplete="tel" value={f.phone} onChange={set("phone")} required /></div>{phoneBad && <small className="err">Numéro invalide (8 à 15 chiffres)</small>}</label>
       <label className="fl" htmlFor="pwd">{signup ? "Mot de passe (8 caractères min.)" : "Mot de passe"}</label><div className="pw"><input id="pwd" placeholder="••••••••" type={show ? "text" : "password"} autoComplete={signup ? "new-password" : "current-password"} minLength={signup ? 8 : undefined} value={f.password} onChange={set("password")} required />
         <button type="button" onClick={() => setShow(!show)}>{show ? "Masquer" : "Afficher"}</button></div>

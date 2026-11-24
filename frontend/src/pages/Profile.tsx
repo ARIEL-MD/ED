@@ -1,3 +1,4 @@
+import { Villes } from "../villes";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api, toDataUrl } from "../api";
@@ -9,7 +10,7 @@ const Cam = ({ label, cls, onFile, children }: { label: string; cls: string; onF
     <input type="file" accept="image/*" hidden onChange={e => { const f = e.target.files?.[0]; if (f) onFile(f); e.target.value = ""; }} /></label>);
 export default function Profile() {
   const stylist = localStorage.getItem("role") === "stylist";
-  const [u, setU] = useState({ name: "", phone: "", avatar_url: null as string | null }); const [cover, setCover] = useState<string | null>(null);
+  const [u, setU] = useState({ name: "", phone: "", avatar_url: null as string | null, city: "", district: "" }); const [cover, setCover] = useState<string | null>(null);
   const [c, setC] = useState(""); const [msg, setMsg] = useState("");
   useEffect(() => { api<typeof u>("/me").then(setU); if (stylist) api<{ cover_url: string | null }>("/manage/profile").then(p => setCover(p.cover_url)).catch(() => {}); }, [stylist]);
   const run = async (f: () => Promise<unknown>, ok: string) => { try { await f(); toast(ok); } catch (e) { toast((e as Error).message, "err"); } };
@@ -23,14 +24,14 @@ export default function Profile() {
       {stylist && <div className="cv" style={cover ? { backgroundImage: `url(${cover})` } : undefined}>{!cover && "Ajoutez une photo de couverture"}<Cam label="Changer la photo de couverture" cls="c2" onFile={setCov}>Couverture</Cam></div>}
       <div className={"pr0" + (stylist ? "" : " solo")}>
         <div className="av" style={u.avatar_url ? { backgroundImage: `url(${u.avatar_url})` } : undefined}>{!u.avatar_url && (u.name?.[0] || "")}<Cam label="Changer la photo de profil" cls="a" onFile={setAvatar} /></div>
-        <div className="tx"><h2>{u.name}</h2><div className="muted">{stylist ? "Professionnel(le)" : "Client"}</div></div>
+        <div className="tx"><h2>{u.name}</h2><div className="muted">{stylist ? "Professionnel(le)" : "Client"}</div>{(u.district || u.city) && <div className="muted loc1">📍 {[u.district, u.city].filter(Boolean).join(", ")}</div>}</div>
       </div>
     </div>
     <div style={{ textAlign: "center" }}>{u.avatar_url && <a className="rm" onClick={delAvatar}>Retirer la photo de profil</a>}{stylist && cover && <> &nbsp; <a className="rm" onClick={delCover}>Retirer la couverture</a></>}</div>
     {stylist && <Services />}
     {!stylist && <div className="menu"><Link to="/favorites"><span>Mes favoris</span><i>›</i></Link><Link to="/bookings"><span>Mes réservations</span><i>›</i></Link></div>}
-    <details className="acc"><summary>Modifier mon profil</summary><label className="fl">Nom<input value={u.name} onChange={e => setU({ ...u, name: e.target.value })} /></label><label className="fl">Téléphone<input value={u.phone} disabled /></label><p className="muted">Le numéro de téléphone ne peut pas être modifié.</p>
-      <button onClick={() => run(() => api("/me", { method: "PATCH", body: JSON.stringify({ name: u.name }) }), "Profil enregistré")}>Enregistrer</button></details>
+    <details className="acc"><summary>Modifier mon profil</summary><label className="fl">Nom<input value={u.name} onChange={e => setU({ ...u, name: e.target.value })} /></label><label className="fl">Téléphone<input value={u.phone} disabled /></label><p className="muted">Le numéro de téléphone ne peut pas être modifié.</p><Villes /><label className="fl">Ville<input list="villes" placeholder="Choisissez ou tapez votre ville" value={u.city || ""} onChange={e => setU({ ...u, city: e.target.value })} /></label><label className="fl">Lieu, quartier précis<input placeholder="Ex. Morofé, côté CAFOP" value={u.district || ""} onChange={e => setU({ ...u, district: e.target.value })} maxLength={120} /></label>
+      <button onClick={() => run(() => api("/me", { method: "PATCH", body: JSON.stringify({ name: u.name, city: u.city, district: u.district }) }), "Profil enregistré")}>Enregistrer</button></details>
     {localStorage.getItem("role") !== "admin" && <details className="acc"><summary>Faire une réclamation</summary><textarea rows={3} value={c} onChange={e => setC(e.target.value)} placeholder="Décrivez le problème" />
       <p></p><button className="ghost" onClick={() => run(async () => { await api("/me/complaints", { method: "POST", body: JSON.stringify({ body: c }) }); setC(""); }, "Réclamation envoyée")}>Envoyer</button></details>}
     <div className="menu"><Link to="/conditions"><span>Conditions d’utilisation</span><i>›</i></Link><Link to="/confidentialite"><span>Politique de confidentialité</span><i>›</i></Link></div>

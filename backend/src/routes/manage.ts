@@ -16,6 +16,7 @@ manageRoutes.patch("/profile", async (req: AuthReq, res) => {
   const d = p.data;
   await db.query("UPDATE stylists SET bio=$2,city=$3,district=$4,home_service=$5,salon_service=$6,travel_fee_fcfa=$7,lat=$8,lng=$9,radius_km=$10,accepts_cash=$11,salon_name=$12 WHERE user_id=$1",
     [req.user!.id, d.bio, d.city, d.district, d.home_service, d.salon_service, d.travel_fee_fcfa, d.lat ?? null, d.lng ?? null, d.radius_km, d.accepts_cash, d.salon_name?.trim() || null]);
+  await db.query("UPDATE users SET city=$2, district=$3 WHERE id=$1", [req.user!.id, d.city, d.district ?? null]);
   res.json({ ok: true });
 });
 manageRoutes.get("/services", async (req: AuthReq, res) => res.json((await db.query("SELECT * FROM services WHERE stylist_id=$1 ORDER BY category,name", [req.user!.id])).rows));

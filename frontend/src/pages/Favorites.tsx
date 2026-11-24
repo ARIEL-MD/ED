@@ -14,6 +14,6 @@ export default function Favorites() {
     {l?.length === 0 && <Empty title="Aucun favori" text="Touchez le cœur sur le profil d’un professionnel pour le retrouver ici."><Link to="/explore"><button className="sm">Explorer</button></Link></Empty>}
     <div className="cards">{l?.map(f => <div className="pcard" key={f.id}><Link to={`/stylist/${f.id}`} style={{ display: "flex", alignItems: "center", gap: 12, flex: 1, minWidth: 0, color: "inherit", textDecoration: "none" }}>
       <div className="av img" style={f.avatar_url ? { backgroundImage: `url(${f.avatar_url})` } : undefined}>{!f.avatar_url && f.name[0]}</div>
-      <div className="pinfo"><b>{f.name}</b><div className="muted">{[f.salon_name, f.district || f.city].filter(Boolean).join(" · ")}{f.from_price ? ` · dès ${fcfa(f.from_price)}` : ""}</div></div></Link>
+      <div className="pinfo"><b>{f.name}</b><div className="muted">{[f.salon_name, [f.district, f.city].filter(Boolean).join(", ")].filter(Boolean).join(" · ")}{f.from_price ? ` · dès ${fcfa(f.from_price)}` : ""}</div></div></Link>
       <button className="ghost sm" onClick={() => remove(f)}>Retirer</button></div>)}</div></main>);
 }

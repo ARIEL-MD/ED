@@ -1,7 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE TYPE role_t AS ENUM ('client','stylist','admin');
-CREATE TABLE users(id uuid PRIMARY KEY DEFAULT gen_random_uuid(), role role_t NOT NULL, name text NOT NULL,
+CREATE TABLE users(id uuid PRIMARY KEY DEFAULT gen_random_uuid(), role role_t NOT NULL, name text NOT NULL, city text, district text,
  phone text UNIQUE NOT NULL, password_hash text NOT NULL, suspended boolean NOT NULL DEFAULT false, avatar_url text, created_at timestamptz DEFAULT now());
 CREATE TABLE stylists(user_id uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE, bio text, city text NOT NULL, district text,
  home_service boolean DEFAULT true, salon_service boolean DEFAULT false, travel_fee_fcfa int DEFAULT 0, approved boolean NOT NULL DEFAULT true, certified boolean NOT NULL DEFAULT false, cover_url text, salon_name text);

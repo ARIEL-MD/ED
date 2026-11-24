@@ -10,11 +10,11 @@ authRoutes.post("/register", async (req, res) => {
   const p = reg.safeParse(req.body);
   if (!p.success) return res.status(400).json({ error: "Données invalides" });
   const { name, phone, password, role, city, district, salonName } = p.data;
-  if (role === "stylist" && !city?.trim()) return res.status(400).json({ error: "Indiquez votre ville." });
+  if (!city?.trim() || !district?.trim()) return res.status(400).json({ error: "Indiquez votre ville et précisément votre quartier." });
   try {
-    const u = await db.query("INSERT INTO users(role,name,phone,password_hash) VALUES($1,$2,$3,$4) RETURNING id",
-      [role, name, phone, await bcrypt.hash(password, 12)]);
-    if (role === "stylist") await db.query("INSERT INTO stylists(user_id,city,approved,district,salon_name) VALUES($1,$2,true,$3,$4)", [u.rows[0].id, city?.trim() || "", district?.trim() || null, salonName?.trim() || null]);
+    const u = await db.query("INSERT INTO users(role,name,phone,password_hash,city,district) VALUES($1,$2,$3,$4,$5,$6) RETURNING id",
+      [role, name, phone, await bcrypt.hash(password, 12), city.trim(), district.trim()]);
+    if (role === "stylist") await db.query("INSERT INTO stylists(user_id,city,approved,district,salon_name) VALUES($1,$2,true,$3,$4)", [u.rows[0].id, city.trim(), district.trim(), salonName?.trim() || null]);
     res.json({ token: sign(u.rows[0].id, role), role });
   } catch { res.status(409).json({ error: "Ce numéro est déjà utilisé" }); }
 });

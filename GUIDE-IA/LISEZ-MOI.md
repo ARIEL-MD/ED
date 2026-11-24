@@ -56,6 +56,7 @@ L'API GitHub publique fonctionne sans jeton :
 - **Render gratuit** : le service s'endort après 15 min sans visite (premier chargement ~30 s). Offre payante (~7 $/mois) pour l'éviter.
 - Paiements Wave (clés + test réel), Orange Money/MTN, SMS (mot de passe oublié), notifications push : non branchés.
 - **Play Store** : l'APK actuel est une version de test (debug). Il faut une version **signée AAB** (clé de signature à garder en lieu sûr), le compte Google Play (25 $), une politique de confidentialité en ligne, des captures d'écran, et pour un compte personnel 12 testeurs pendant 14 jours.
+- Ville et quartier précis sont **obligatoires pour tous** (`users.city`, `users.district`, recopiés dans `stylists` pour les professionnelles ; liste de villes dans `frontend/src/villes.tsx`) ; l'Explorer filtre par défaut sur la ville du profil.
 - Inscription : Nom + Prénom (enregistrés ensemble dans `users.name`, prénom en premier) ; pour une professionnelle : nom du salon (facultatif, `stylists.salon_name`), ville et quartier précis (`stylists.district`).
 - Quelques écrans gardent un vocabulaire au féminin (voir README).
 - Coûts estimés : ~40 $ la première année pour démarrer ; 60 à 150 $/mois avec des milliers d'utilisateurs actifs (SMS et photos pèsent le plus).

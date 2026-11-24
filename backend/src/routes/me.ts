@@ -5,11 +5,13 @@ import { auth, AuthReq } from "../auth";
 import { saveImage, removeImage } from "../images";
 export const meRoutes = Router();
 meRoutes.use(auth());
-meRoutes.get("/", async (req: AuthReq, res) => res.json((await db.query("SELECT id,role,name,phone,avatar_url FROM users WHERE id=$1", [req.user!.id])).rows[0]));
+meRoutes.get("/", async (req: AuthReq, res) => res.json((await db.query("SELECT id,role,name,phone,avatar_url,city,district FROM users WHERE id=$1", [req.user!.id])).rows[0]));
 meRoutes.patch("/", async (req: AuthReq, res) => {
-  const p = z.object({ name: z.string().min(2).max(80) }).safeParse(req.body);
-  if (!p.success) return res.status(400).json({ error: "Nom invalide" });
-  await db.query("UPDATE users SET name=$2 WHERE id=$1", [req.user!.id, p.data.name]); res.json({ ok: true });
+  const p = z.object({ name: z.string().min(2).max(80), city: z.string().trim().min(2).max(80), district: z.string().trim().min(2).max(120) }).safeParse(req.body);
+  if (!p.success) return res.status(400).json({ error: "Nom, ville et quartier sont obligatoires" });
+  await db.query("UPDATE users SET name=$2, city=$3, district=$4 WHERE id=$1", [req.user!.id, p.data.name, p.data.city, p.data.district]);
+  await db.query("UPDATE stylists SET city=$2, district=$3 WHERE user_id=$1", [req.user!.id, p.data.city, p.data.district]); // professionnelle : même lieu partout
+  res.json({ ok: true });
 });
 // Photo de profil : clients et coiffeuses
 meRoutes.put("/avatar", async (req: AuthReq, res) => {
