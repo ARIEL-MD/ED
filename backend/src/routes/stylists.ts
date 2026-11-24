@@ -6,7 +6,7 @@ stylistRoutes.get("/", async (req, res) => {
   const qs = typeof req.query.q === "string" ? req.query.q.trim().slice(0, 60) : "";
   const q = qs ? `%${qs.replace(/[\\%_]/g, "\\$&")}%` : null;
   const r = await db.query(
-    `SELECT u.name, u.avatar_url, s.cover_url, s.user_id AS id, s.city, s.district, s.home_service, s.salon_service, s.certified,
+    `SELECT u.name, u.avatar_url, s.cover_url, s.user_id AS id, s.city, s.district, s.salon_name, s.home_service, s.salon_service, s.certified,
        MIN(sv.price_fcfa) AS from_price, COALESCE(AVG(rv.rating),0)::numeric(2,1) AS rating, COUNT(rv.rating) AS reviews
      FROM stylists s JOIN users u ON u.id=s.user_id AND NOT u.suspended
      LEFT JOIN services sv ON sv.stylist_id=s.user_id

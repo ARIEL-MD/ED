@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 const BUDGETS = ["10000", "25000", "50000"];
 import { api, fcfa } from "../api";
 import { Certified } from "../ui";
-interface S { id: string; name: string; avatar_url?: string | null; city: string; district?: string; certified?: boolean; rating: string; reviews: string; from_price?: number; km?: number }
+interface S { id: string; name: string; avatar_url?: string | null; city: string; district?: string; salon_name?: string | null; certified?: boolean; rating: string; reviews: string; from_price?: number; km?: number }
 export default function Explore() {
   const [sp, setSp] = useSearchParams(); const [cats, setCats] = useState<{ id: number; name: string }[]>([]); const [loaded, setLoaded] = useState(false);
   const [list, setList] = useState<S[]>([]); const [district, setDistrict] = useState(""); const [maxPrice, setMax] = useState(""); const [err, setErr] = useState("");
@@ -25,6 +25,6 @@ export default function Explore() {
       <div className="scroll"><span className="muted" style={{ alignSelf: "center" }}>Budget max</span>{BUDGETS.map(b => <button type="button" key={b} aria-pressed={maxPrice === b} className={"chip" + (maxPrice === b ? " on" : "")} onClick={() => setMax(maxPrice === b ? "" : b)}>{fcfa(Number(b))}</button>)}</div></>}
     {err && <p className="err">{err}</p>}{loaded && !err && list.length === 0 && <div className="sec"><b>Aucun professionnel trouvé</b><div className="muted">Essayez une autre catégorie, un autre quartier ou un budget plus large.</div></div>}
     <div className="cards">{list.map(s => <Link className="pcard" key={s.id} to={`/stylist/${s.id}`}><div className="av img" style={s.avatar_url ? { backgroundImage: `url(${s.avatar_url})` } : undefined}>{!s.avatar_url && s.name[0]}</div>
-      <div className="pinfo"><b>{s.name}{s.certified && <> <Certified mini /></>}</b><div className="muted">{s.district || s.city}{s.km !== undefined && ` · ${s.km.toFixed(1)} km`}{s.from_price ? ` · dès ${fcfa(s.from_price)}` : ""}</div>
+      <div className="pinfo"><b>{s.name}{s.certified && <> <Certified mini /></>}</b><div className="muted">{[s.salon_name, s.district || s.city].filter(Boolean).join(" · ")}{s.km !== undefined && ` · ${s.km.toFixed(1)} km`}{s.from_price ? ` · dès ${fcfa(s.from_price)}` : ""}</div>
         <div className="stars">{Number(s.reviews) > 0 ? <>★ {s.rating} <span>({s.reviews} avis)</span></> : <span className="muted">Nouveau</span>}</div></div><span className="pill">Réserver</span></Link>)}</div></main>);
 }

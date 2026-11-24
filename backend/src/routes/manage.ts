@@ -7,15 +7,15 @@ import { auth, AuthReq } from "../auth";
 import { saveImage, removeImage, savePrivate, removePrivate, publicUrl } from "../images";
 export const manageRoutes = Router();
 manageRoutes.use(auth("stylist"));
-manageRoutes.get("/profile", async (req: AuthReq, res) => res.json((await db.query("SELECT bio,city,district,home_service,salon_service,travel_fee_fcfa,lat,lng,radius_km,accepts_cash,approved,certified,cover_url FROM stylists WHERE user_id=$1", [req.user!.id])).rows[0]));
+manageRoutes.get("/profile", async (req: AuthReq, res) => res.json((await db.query("SELECT bio,city,district,salon_name,home_service,salon_service,travel_fee_fcfa,lat,lng,radius_km,accepts_cash,approved,certified,cover_url FROM stylists WHERE user_id=$1", [req.user!.id])).rows[0]));
 manageRoutes.patch("/profile", async (req: AuthReq, res) => {
-  const p = z.object({ bio: z.string().max(1000).optional(), city: z.string().min(2), district: z.string().max(80).optional(), home_service: z.boolean(), salon_service: z.boolean(),
+  const p = z.object({ bio: z.string().max(1000).optional(), city: z.string().min(2), district: z.string().max(80).optional(), salon_name: z.string().max(120).nullable().optional(), home_service: z.boolean(), salon_service: z.boolean(),
     travel_fee_fcfa: z.number().int().min(0).max(50000), lat: z.number().min(-90).max(90).nullable().optional(), lng: z.number().min(-180).max(180).nullable().optional(),
     radius_km: z.number().int().min(1).max(50), accepts_cash: z.boolean() }).safeParse(req.body);
   if (!p.success) return res.status(400).json({ error: "Données invalides" });
   const d = p.data;
-  await db.query("UPDATE stylists SET bio=$2,city=$3,district=$4,home_service=$5,salon_service=$6,travel_fee_fcfa=$7,lat=$8,lng=$9,radius_km=$10,accepts_cash=$11 WHERE user_id=$1",
-    [req.user!.id, d.bio, d.city, d.district, d.home_service, d.salon_service, d.travel_fee_fcfa, d.lat ?? null, d.lng ?? null, d.radius_km, d.accepts_cash]);
+  await db.query("UPDATE stylists SET bio=$2,city=$3,district=$4,home_service=$5,salon_service=$6,travel_fee_fcfa=$7,lat=$8,lng=$9,radius_km=$10,accepts_cash=$11,salon_name=$12 WHERE user_id=$1",
+    [req.user!.id, d.bio, d.city, d.district, d.home_service, d.salon_service, d.travel_fee_fcfa, d.lat ?? null, d.lng ?? null, d.radius_km, d.accepts_cash, d.salon_name?.trim() || null]);
   res.json({ ok: true });
 });
 manageRoutes.get("/services", async (req: AuthReq, res) => res.json((await db.query("SELECT * FROM services WHERE stylist_id=$1 ORDER BY category,name", [req.user!.id])).rows));

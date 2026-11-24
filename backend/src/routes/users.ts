@@ -5,15 +5,15 @@ import { db } from "../db";
 import { sign } from "../auth";
 export const authRoutes = Router();
 const reg = z.object({ name: z.string().min(2), phone: z.string().regex(/^\+?\d{8,15}$/), password: z.string().min(8),
-  role: z.enum(["client", "stylist"]), city: z.string().optional() });
+  role: z.enum(["client", "stylist"]), city: z.string().optional(), district: z.string().max(120).optional(), salonName: z.string().max(120).optional() });
 authRoutes.post("/register", async (req, res) => {
   const p = reg.safeParse(req.body);
   if (!p.success) return res.status(400).json({ error: "Données invalides" });
-  const { name, phone, password, role, city } = p.data;
+  const { name, phone, password, role, city, district, salonName } = p.data;
   try {
     const u = await db.query("INSERT INTO users(role,name,phone,password_hash) VALUES($1,$2,$3,$4) RETURNING id",
       [role, name, phone, await bcrypt.hash(password, 12)]);
-    if (role === "stylist") await db.query("INSERT INTO stylists(user_id,city,approved) VALUES($1,$2,true)", [u.rows[0].id, city || "Abidjan"]);
+    if (role === "stylist") await db.query("INSERT INTO stylists(user_id,city,approved,district,salon_name) VALUES($1,$2,true,$3,$4)", [u.rows[0].id, city || "Abidjan", district?.trim() || null, salonName?.trim() || null]);
     res.json({ token: sign(u.rows[0].id, role), role });
   } catch { res.status(409).json({ error: "Ce numéro est déjà utilisé" }); }
 });
