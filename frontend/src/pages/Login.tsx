@@ -5,7 +5,7 @@ export default function Login() {
   // Accès discret à l'espace administrateur : 5 touches rapides sur le logo
   const nav = useNavigate(); const taps = useRef({ n: 0, t: 0 });
   const secret = () => { const now = Date.now(), k = taps.current; k.n = now - k.t < 1500 ? k.n + 1 : 1; k.t = now; if (k.n >= 5) { k.n = 0; nav("/admin/login"); } };
-  const [f, setF] = useState({ first: "", last: "", salon: "", city: "Abidjan", district: "", phone: "", password: "", role: "client" });
+  const [f, setF] = useState({ first: "", last: "", salon: "", city: "", district: "", phone: "", password: "", role: "client" });
   const [signup, setSignup] = useState(false); const [show, setShow] = useState(false); const [ok, setOk] = useState(false); const [busy, setBusy] = useState(false); const [err, setErr] = useState("");
   const set = (k: string) => (e: { target: { value: string } }) => setF({ ...f, [k]: e.target.value });
   const phoneBad = signup && !!f.phone && !/^\+?\d{8,15}$/.test(f.phone.replace(/\s/g, ""));
@@ -13,10 +13,10 @@ export default function Login() {
   const submit = async (e: FormEvent) => {
     e.preventDefault(); setErr("");
     if (signup && !ok) return setErr("Merci d’accepter les conditions d’utilisation.");
-    if (signup && f.role === "stylist" && !f.district.trim()) return setErr("Indiquez précisément votre lieu ou quartier.");
+    if (signup && f.role === "stylist" && (!f.city.trim() || !f.district.trim())) return setErr("Indiquez votre ville et précisément votre lieu ou quartier.");
     setBusy(true);
     try {
-      const r = await api<{ token: string; role: string }>(signup ? "/auth/register" : "/auth/login", { method: "POST", body: JSON.stringify(signup ? { name: `${f.first.trim()} ${f.last.trim()}`.trim(), phone: f.phone.replace(/\s/g, ""), password: f.password, role: f.role, city: f.city.trim() || "Abidjan", district: f.district.trim(), salonName: f.salon.trim() } : { phone: f.phone.replace(/\s/g, ""), password: f.password }) });
+      const r = await api<{ token: string; role: string }>(signup ? "/auth/register" : "/auth/login", { method: "POST", body: JSON.stringify(signup ? { name: `${f.first.trim()} ${f.last.trim()}`.trim(), phone: f.phone.replace(/\s/g, ""), password: f.password, role: f.role, city: f.city.trim(), district: f.district.trim(), salonName: f.salon.trim() } : { phone: f.phone.replace(/\s/g, ""), password: f.password }) });
       localStorage.setItem("token", r.token); localStorage.setItem("role", r.role); window.location.href = "/";
     } catch (e) { setErr((e as Error).message); setBusy(false); }
   };
@@ -26,7 +26,7 @@ export default function Login() {
         <button type="button" key={v} className={"rc" + (f.role === v ? " on" : "")} aria-pressed={f.role === v} onClick={() => setF({ ...f, role: v })}><svg viewBox="0 0 24 24"><path d={ic} /></svg><b>{t}</b><small>{sub}</small></button>)}</div>}
       {signup && <div className="two2"><label className="fl">Nom<input placeholder="Votre nom" autoComplete="family-name" value={f.last} onChange={set("last")} required /></label><label className="fl">Prénom<input placeholder="Votre prénom" autoComplete="given-name" value={f.first} onChange={set("first")} required /></label></div>}
       {signup && f.role === "stylist" && <><label className="fl">Nom du salon (facultatif)<input placeholder="Ex. Salon Belle Étoile" value={f.salon} onChange={set("salon")} maxLength={120} /></label>
-        <div className="two2"><label className="fl">Ville<input placeholder="Abidjan" value={f.city} onChange={set("city")} required /></label><label className="fl">Lieu, quartier précis<input placeholder="Ex. Cocody Angré" value={f.district} onChange={set("district")} maxLength={120} required /></label></div></>}
+        <div className="two2"><label className="fl">Ville<input placeholder="Ex. Abidjan, Bouaké, Korhogo…" value={f.city} onChange={set("city")} required /></label><label className="fl">Lieu, quartier précis<input placeholder="Ex. Cocody Angré" value={f.district} onChange={set("district")} maxLength={120} required /></label></div></>}
       <label className="fl">Téléphone<div className={"pf" + (phoneBad ? " bad" : "")}>{!f.phone.startsWith("+") && <span className="pre">+225</span>}<input placeholder="Votre numéro" type="tel" inputMode="tel" autoComplete="tel" value={f.phone} onChange={set("phone")} required /></div>{phoneBad && <small className="err">Numéro invalide (8 à 15 chiffres)</small>}</label>
       <label className="fl" htmlFor="pwd">{signup ? "Mot de passe (8 caractères min.)" : "Mot de passe"}</label><div className="pw"><input id="pwd" placeholder="••••••••" type={show ? "text" : "password"} autoComplete={signup ? "new-password" : "current-password"} minLength={signup ? 8 : undefined} value={f.password} onChange={set("password")} required />
         <button type="button" onClick={() => setShow(!show)}>{show ? "Masquer" : "Afficher"}</button></div>
