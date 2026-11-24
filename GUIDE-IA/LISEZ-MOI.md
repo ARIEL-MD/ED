@@ -22,6 +22,9 @@ Esteti-Ma met en relation des clientes et des professionnelles de la beauté (r�
 - `render.yaml` : description Render (non utilisée : le service a été créé à la main).
 - Le backend sert `frontend/dist` (voir `src/index.ts`, bloc « Site web »). `npm run build` du backend compile aussi le frontend.
 
+## Affichage adaptatif
+Aucun format d'appareil n'est imposé : la largeur de l'appli est fluide (variable CSS `--w` dans `frontend/src/styles.css`, bloc « Adaptation fluide » en bas du fichier) et les listes de professionnelles utilisent la classe `.cards` (grille qui s'adapte à la place disponible). Pour toute nouvelle liste de cartes, l'entourer de `<div className="cards">`. Tester avec Playwright + `/usr/bin/google-chrome` à plusieurs largeurs (320 à 1920 px) et vérifier l'absence de défilement horizontal.
+
 ## 3. Comment appliquer un changement
 1. Modifier le code, puis commit et **push sur `main`** (ex. `git push origin main`).
 2. **Si le changement touche `frontend/**`** : GitHub Actions construit seul un nouvel APK (3 à 4 min) et le publie dans Releases (`https://github.com/ARIEL-MD/ED/releases`, tag `apk-N`, fichier `Esteti-Ma.apk`). Lien de téléchargement : `https://github.com/ARIEL-MD/ED/releases/download/apk-N/Esteti-Ma.apk`.

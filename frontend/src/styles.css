@@ -219,27 +219,23 @@ nav a.active{background:linear-gradient(135deg,#001454,#2B44A8);color:#fff;box-s
 nav a .badge,nav a.active .badge{top:2px;right:calc(50% - 22px)}
 @media (max-width:350px){nav{padding:6px 4px;width:calc(100% - 16px)}}
 
-/* ===== Adaptation aux écrans : téléphone, grand téléphone, tablette, ordinateur ===== */
-@media (min-width:600px){
-  .app{max-width:680px;box-shadow:0 0 40px rgba(11,20,64,.06)}
-  nav{width:min(656px,calc(100% - 24px))}
-  .gal{grid-template-columns:repeat(3,1fr)}
-  .auth{max-width:520px}
-  .body main{padding:22px 24px 120px}
-  h2{font-size:30px}
-}
-@media (min-width:900px){
-  .app{max-width:860px}
-  nav{width:min(836px,calc(100% - 24px))}
-  .gal{grid-template-columns:repeat(4,1fr)}
-}
-@media (min-width:1200px){
-  .app{max-width:960px}
-  nav{width:min(936px,calc(100% - 24px))}
-}
-.app.adm{max-width:min(1100px,100%)}
-/* téléphone en mode paysage : barre du bas plus compacte */
-@media (max-height:480px) and (orientation:landscape){
+/* ===== Adaptation fluide à tous les écrans : aucun format d'appareil imposé =====
+   La largeur suit l'écran (téléphone, pliable, tablette, ordinateur, grand écran) ; les listes se répartissent en colonnes selon la place disponible. */
+:root{--w:clamp(30rem,72vw,68rem);--pad:clamp(14px,3vw,32px)}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.app{max-width:min(100%,var(--w));min-height:100vh;min-height:100dvh}
+.app.adm{max-width:min(100%,86rem)}
+nav{width:min(calc(100% - 24px),calc(var(--w) - 24px))}
+.body main{padding:clamp(16px,2.4vw,28px) var(--pad) 120px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,19rem),1fr));column-gap:12px;align-items:stretch}
+.cards>.pcard{margin:6px 0}
+.gal{grid-template-columns:repeat(auto-fill,minmax(min(100%,8.5rem),1fr))}
+.auth{max-width:min(100%,32rem);padding-left:clamp(16px,4vw,32px);padding-right:clamp(16px,4vw,32px)}
+.auth .brand{width:min(260px,72%,40vh)}
+h2{font-size:clamp(24px,1.2vw + 20px,34px)}
+img,video{max-width:100%}
+/* écran peu haut (téléphone en paysage, fenêtre basse) : barre du bas plus compacte */
+@media (max-height:480px){
   nav{padding:4px 6px}nav a{padding:4px 2px}nav a svg{width:18px;height:18px}
-  .body main{padding-bottom:84px}
+  .body main{padding-bottom:84px}.auth{padding-top:16px}.auth .brand{width:min(160px,30vh)}
 }

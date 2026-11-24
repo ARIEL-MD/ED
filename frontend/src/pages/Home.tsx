@@ -35,11 +35,11 @@ export default function Home() {
     <div className="scroll">{cats.map(c => <Link className="chip" key={c.id} to={`/explore?category=${encodeURIComponent(c.name)}`}>{c.name}</Link>)}</div>
     {found !== null ? <>
       <p className="muted">{found.length} résultat{found.length > 1 ? "s" : ""}</p>
-      {found.map(s => <Card key={s.id} s={s} />)}
+      <div className="cards">{found.map(s => <Card key={s.id} s={s} />)}</div>
       {found.length === 0 && <div className="sec"><b>Aucun résultat</b><div className="muted">Essayez un autre mot, un quartier ou une catégorie.</div></div>}
     </> : <>
       <div className="hs-t"><h2>Les mieux notés</h2><Link to="/explore">Tout voir</Link></div>
-      {top.slice(0, 4).map(s => <Card key={s.id} s={s} />)}
+      <div className="cards">{top.slice(0, 4).map(s => <Card key={s.id} s={s} />)}</div>
       <Link className="pcard" to="/favorites"><div className="pinfo"><b>Mes favoris</b><div className="muted">Retrouvez les professionnels que vous aimez</div></div><span className="pill">Voir</span></Link>
       <Link className="pcard" to="/explore"><div className="pinfo"><b>Près de moi</b><div className="muted">Trouvez un professionnel disponible dans votre zone</div></div><span className="pill">Voir</span></Link>
     </>}
