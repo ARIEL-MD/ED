@@ -23,7 +23,7 @@ export default function Book() {
   const ready = !!(sv && slot && (!needAddr || address.trim()));
   const confirm = async () => {
     setBusy(true); setErr("");
-    try { const b = await api<{ id: string }>("/bookings", { method: "POST", body: JSON.stringify({ stylistId: id, serviceId: sv, place, address, startsAt: slot }) }); toast("Demande envoyée. Réglez maintenant l’acompte pour la confirmer."); nav(`/bookings?b=${b.id}&pay=1`, { replace: true }); }
+    try { const b = await api<{ id: string }>("/bookings", { method: "POST", body: JSON.stringify({ stylistId: id, serviceId: sv, place, address, startsAt: slot }) }); toast("Demande envoyée. Réglez maintenant l’acompte pour la confirmer."); nav(`/bookings?b=${b.id}&pay=1&new=1`, { replace: true }); }
     catch (e) { setErr((e as Error).message); setBusy(false); }
   };
   return (<main>

@@ -67,3 +67,8 @@ createRoot(document.getElementById("root")!).render(
     {localStorage.getItem("token") && <Tabs />}
     <UiHost />
   </BrowserRouter></StrictMode>);
+
+// Écran de démarrage : disparaît en fondu une fois l'appli prête
+window.setTimeout(() => { const sp = document.getElementById("splash"); if (sp) { sp.style.opacity = "0"; window.setTimeout(() => sp.remove(), 450); } }, 700);
+// Petit retour tactile sur les boutons et la navigation (si le téléphone le permet)
+document.addEventListener("click", e => { if ((e.target as HTMLElement).closest("button, nav a, .quick a, .cat")) navigator.vibrate?.(8); }, { passive: true });

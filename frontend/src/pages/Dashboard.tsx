@@ -15,9 +15,13 @@ export default function Dashboard() {
   const refuse = async (id: string) => { if (await ask("Refuser cette demande ?", "Oui, refuser")) act(`/bookings/${id}/respond`, { accept: false }, "Demande refusée"); };
   const byDate = (x: B, y: B) => +new Date(x.starts_at) - +new Date(y.starts_at);
   const p = (l || []).filter(b => b.status === "pending").sort(byDate), a = (l || []).filter(b => b.status === "accepted").sort(byDate); const left = todo.filter(t => !t.ok);
+  const day = (d: Date) => d.toISOString().slice(0, 10), today = day(new Date());
+  const nToday = (l || []).filter(b => b.status === "accepted" && day(new Date(b.starts_at)) === today).length;
+  const wk = (l || []).filter(b => b.status === "done" && +new Date(b.starts_at) > Date.now() - 7 * 864e5).reduce((t, b) => t + b.total_fcfa, 0);
   return (<main><h2>Demandes</h2>
+    <div className="stats"><div><b>{nToday}</b><small>RDV aujourd’hui</small></div><div><b>{p.length}</b><small>en attente</small></div><div><b>{wk.toLocaleString("fr-FR")}</b><small>FCFA · 7 jours</small></div></div>
     {!approved && <div className="lock"><b>Profil en attente de validation.</b> L’équipe vérifie votre profil ; vous serez visible dès qu’il est validé.</div>}
-    {left.length > 0 && <div className="sec"><h3>Complétez votre profil ({todo.length - left.length}/{todo.length})</h3>{left.map(t => <Link key={t.text} to={t.to} className="row todo"><span>{t.text}</span><span>›</span></Link>)}</div>}
+    {left.length > 0 && <div className="sec"><h3>Complétez votre profil ({todo.length - left.length}/{todo.length})</h3><div className="bar"><i style={{ width: `${Math.round((todo.length - left.length) / todo.length * 100)}%` }} /></div>{left.map(t => <Link key={t.text} to={t.to} className="row todo"><span>{t.text}</span><span>›</span></Link>)}</div>}
     {l && p.length > 0 && <p className="muted"><b>{p.length}</b> demande{p.length > 1 ? "s" : ""} en attente de votre réponse</p>}
     {l === null && <Skel />}
     {l && p.length === 0 && <Empty title="Aucune nouvelle demande" text="Les demandes de réservation apparaîtront ici." />}
