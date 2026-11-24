@@ -23,7 +23,7 @@ Esteti-Ma met en relation des clientes et des professionnelles de la beauté (r�
 - Le backend sert `frontend/dist` (voir `src/index.ts`, bloc « Site web »). `npm run build` du backend compile aussi le frontend.
 
 ## Affichage adaptatif
-Aucun format d'appareil n'est imposé : la largeur de l'appli est fluide (variable CSS `--w` dans `frontend/src/styles.css`, bloc « Adaptation fluide » en bas du fichier) et les listes de professionnelles utilisent la classe `.cards` (grille qui s'adapte à la place disponible). Pour toute nouvelle liste de cartes, l'entourer de `<div className="cards">`. Tester avec Playwright + `/usr/bin/google-chrome` à plusieurs largeurs (320 à 1920 px) et vérifier l'absence de défilement horizontal.
+Aucun format d’appareil n’est imposé : l’appli occupe tout l’écran (voir `frontend/src/styles.css`, bloc « Adaptation fluide » en bas du fichier) et les listes de professionnelles utilisent la classe `.cards` (grille qui s'adapte à la place disponible). Pour toute nouvelle liste de cartes, l'entourer de `<div className="cards">`. Tester avec Playwright + `/usr/bin/google-chrome` à plusieurs largeurs (320 à 1920 px) et vérifier l'absence de défilement horizontal.
 
 ## 3. Comment appliquer un changement
 1. Modifier le code, puis commit et **push sur `main`** (ex. `git push origin main`).
@@ -49,7 +49,7 @@ L'API GitHub publique fonctionne sans jeton :
 - L'espace administrateur n'est lié nulle part dans l'interface : sur l'appli Android, toucher **5 fois rapidement le logo** sur l’écran de connexion ; sur le web, aller sur `/admin/login`.
 - Un numéro de téléphone ne peut avoir qu'un seul compte (client, professionnelle ou admin) et son type ne change pas. Les numéros sont enregistrés tels que saisis (ex. `0799506172`), sans normalisation.
 - Créer un administrateur : hacher le mot de passe avec `bcryptjs` (coût 12, au moins 10 caractères), puis `INSERT INTO users(role,name,phone,password_hash) VALUES('admin',...)` sur Neon. Ne jamais créer d'admin avec un mot de passe faible.
-- Les nouvelles professionnelles ne sont visibles qu'après **validation par l'admin** (`stylists.approved`). La certification (badge) est facultative.
+- Les professionnelles sont **visibles et utilisables dès l'inscription** (plus de validation par l'admin : `stylists.approved` vaut `true` par défaut). Seule la **certification** (badge) passe par une demande avec pièce d'identité, traitée par l'admin ; elle est facultative.
 
 ## 6. À faire / limites actuelles
 - **Photos** : stockées sur le disque du serveur Render gratuit, donc **effacées à chaque redémarrage**. À brancher : Cloudinary ou S3 (voir `backend/src/images.ts`, `saveImage`).

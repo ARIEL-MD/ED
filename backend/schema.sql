@@ -4,7 +4,7 @@ CREATE TYPE role_t AS ENUM ('client','stylist','admin');
 CREATE TABLE users(id uuid PRIMARY KEY DEFAULT gen_random_uuid(), role role_t NOT NULL, name text NOT NULL,
  phone text UNIQUE NOT NULL, password_hash text NOT NULL, suspended boolean NOT NULL DEFAULT false, avatar_url text, created_at timestamptz DEFAULT now());
 CREATE TABLE stylists(user_id uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE, bio text, city text NOT NULL, district text,
- home_service boolean DEFAULT true, salon_service boolean DEFAULT false, travel_fee_fcfa int DEFAULT 0, approved boolean NOT NULL DEFAULT false, certified boolean NOT NULL DEFAULT false, cover_url text);
+ home_service boolean DEFAULT true, salon_service boolean DEFAULT false, travel_fee_fcfa int DEFAULT 0, approved boolean NOT NULL DEFAULT true, certified boolean NOT NULL DEFAULT false, cover_url text);
 CREATE TABLE services(id uuid PRIMARY KEY DEFAULT gen_random_uuid(), stylist_id uuid REFERENCES stylists(user_id) ON DELETE CASCADE,
  category text NOT NULL, name text NOT NULL, price_fcfa int NOT NULL CHECK(price_fcfa>0), duration_min int NOT NULL CHECK(duration_min>0), description text, photo_url text);
 CREATE TABLE availability(stylist_id uuid REFERENCES stylists(user_id) ON DELETE CASCADE, weekday int CHECK(weekday BETWEEN 0 AND 6),

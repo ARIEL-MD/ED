@@ -13,7 +13,7 @@ authRoutes.post("/register", async (req, res) => {
   try {
     const u = await db.query("INSERT INTO users(role,name,phone,password_hash) VALUES($1,$2,$3,$4) RETURNING id",
       [role, name, phone, await bcrypt.hash(password, 12)]);
-    if (role === "stylist") await db.query("INSERT INTO stylists(user_id,city) VALUES($1,$2)", [u.rows[0].id, city || "Abidjan"]);
+    if (role === "stylist") await db.query("INSERT INTO stylists(user_id,city,approved) VALUES($1,$2,true)", [u.rows[0].id, city || "Abidjan"]);
     res.json({ token: sign(u.rows[0].id, role), role });
   } catch { res.status(409).json({ error: "Ce numéro est déjà utilisé" }); }
 });

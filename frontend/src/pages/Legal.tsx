@@ -20,7 +20,7 @@ const CONDITIONS: Sec[] = [
   ]],
   ["3. Professionnels", [
     "Le professionnel publie son profil (présentation, ville, quartier, zone d’intervention), ses prestations (nom, description, durée, prix, photos) et ses disponibilités. Il s’engage à fournir des informations exactes, à honorer les réservations acceptées et à n’utiliser que des photos dont il détient les droits.",
-    "Le profil d’un professionnel n’apparaît dans l’application qu’après validation par l’équipe Esteti-Ma.",
+    "Le profil d’un professionnel apparaît dans l’application dès la création de son compte. Le badge de certification n’est délivré qu’après vérification d’une pièce d’identité, sur demande du professionnel.",
     "Le badge « Certifié » indique que l’équipe a vérifié l’identité du professionnel à partir d’une pièce justificative. Il ne constitue ni un diplôme, ni une garantie de qualité, ni une assurance.",
   ]],
   ["4. Réservation", [
