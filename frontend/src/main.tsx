@@ -20,7 +20,7 @@ import Messages from "./pages/Messages";
 import { Conditions, Confidentialite } from "./pages/Legal";
 import { api } from "./api";
 import { UiHost } from "./ui";
-const titles: Record<string, string> = { explore: "Explorer", stylist: "Professionnel(le)", book: "Réserver", bookings: "Réservations", chat: "Conversation", messages: "Messages", favorites: "Favoris", notifications: "Notifications", profile: "Profil", manage: "Mon activité" };
+const titles: Record<string, string> = { explore: "Explorer", stylist: "Profil", book: "Réserver", bookings: "Réservations", chat: "Conversation", messages: "Messages", favorites: "Favoris", notifications: "Notifications", profile: "Profil", manage: "Mon activité" };
 function Shell({ children }: { children: JSX.Element }) {
   const { pathname } = useLocation(); const nav = useNavigate(); const root = pathname === "/"; const r = localStorage.getItem("role");
   const parts = pathname.split("/").filter(Boolean); const deep = parts.length > 1;
