@@ -306,3 +306,8 @@ button:active,.pcard:active,.quick a:active,.cat:active,.card:active,.menu a:act
 
 .two2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.two2 .fl{min-width:0}
 .loc1{font-size:13px;margin-top:2px}
+.hi{margin:6px 2px 12px;font-weight:700;font-size:16px}.hi .muted{font-weight:500;font-size:13px}
+.cat span{font-size:26px;line-height:1;display:grid;place-items:center}
+.bud{display:flex;align-items:center;gap:8px;margin:8px 0}.bud input{flex:1;min-width:0;margin:0;text-align:right}
+.pr0:not(.solo){flex-direction:column;align-items:flex-start;gap:8px}.pr0:not(.solo) .tx{padding-top:0;color:var(--ink,#0B1440)}.pr0:not(.solo) .tx h2{overflow-wrap:anywhere}
+.bud input{flex:0 1 150px;padding:9px 12px;height:auto}.bud{justify-content:flex-end}.bud>.muted:first-child{margin-right:auto}

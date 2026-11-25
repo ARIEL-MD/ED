@@ -1,7 +1,6 @@
 import { Villes } from "../villes";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-const BUDGETS = ["10000", "25000", "50000"];
 import { api, fcfa } from "../api";
 import { Certified } from "../ui";
 interface S { id: string; name: string; avatar_url?: string | null; city: string; district?: string; salon_name?: string | null; certified?: boolean; rating: string; reviews: string; from_price?: number; km?: number }
@@ -26,7 +25,7 @@ export default function Explore() {
     <div className="scroll">{cats.map(c => <button type="button" key={c.id} aria-pressed={category === c.name} className={"chip" + (category === c.name ? " on" : "")} onClick={() => pickCat(c.name)}>{c.name}</button>)}</div>
     <button className="ghost" onClick={locate}>Professionnels près de moi</button>{pos && <p className="muted">Résultats triés par distance (15 km autour de vous) ; les autres filtres sont désactivés. <button type="button" className="linkbtn" onClick={() => setPos(null)}>Annuler</button></p>}
     {!pos && <><Villes /><input list="villes" placeholder="Ville" value={city} onChange={e => setCity(e.target.value)} /><input placeholder="Quartier (ex. Cocody)" value={district} onChange={e => setDistrict(e.target.value)} />
-      <div className="scroll"><span className="muted" style={{ alignSelf: "center" }}>Budget max</span>{BUDGETS.map(b => <button type="button" key={b} aria-pressed={maxPrice === b} className={"chip" + (maxPrice === b ? " on" : "")} onClick={() => setMax(maxPrice === b ? "" : b)}>{fcfa(Number(b))}</button>)}</div></>}
+      <label className="bud"><span className="muted">Budget max</span><input inputMode="numeric" placeholder="Ex. 15 000" value={maxPrice ? Number(maxPrice).toLocaleString("fr-FR") : ""} onChange={e => setMax(e.target.value.replace(/\D/g, "").slice(0, 8))} /><span className="muted">FCFA</span></label></>}
     {err && <p className="err">{err}</p>}{loaded && !err && list.length === 0 && <div className="sec"><b>Aucun professionnel trouvé</b><div className="muted">Essayez une autre catégorie, un autre quartier ou un budget plus large.</div></div>}
     <div className="cards">{list.map(s => <Link className="pcard" key={s.id} to={`/stylist/${s.id}`}><div className="av img" style={s.avatar_url ? { backgroundImage: `url(${s.avatar_url})` } : undefined}>{!s.avatar_url && s.name[0]}</div>
       <div className="pinfo"><b>{s.name}{s.certified && <> <Certified mini /></>}</b><div className="muted">{[s.salon_name, [s.district, s.city].filter(Boolean).join(", ")].filter(Boolean).join(" · ")}{s.km !== undefined && ` · ${s.km.toFixed(1)} km`}{s.from_price ? ` · dès ${fcfa(s.from_price)}` : ""}</div>
