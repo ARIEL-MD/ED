@@ -14,6 +14,6 @@ export default function Notifications() {
   useEffect(() => { api<N[]>("/me/notifications").then(setL).catch(() => setL([])); }, []);
   return (<main><h2>Notifications</h2>{l === null && <Skel />}{l?.length === 0 && <Empty title="Rien pour le moment" text="Vos alertes de réservation apparaîtront ici." />}
     {l?.map(n => <Link key={n.id} to={dest(n)} className={"card notif" + (n.read ? "" : " unread")}><span className="ni" aria-hidden>{ICON[n.kind] || "\u{1F514}"}</span>
-      <span className="nb"><b>{n.body}</b><span className="muted">{ago(n.created_at)}</span></span><span className="muted">\u203A</span></Link>)}
+      <span className="nb"><b>{n.body}</b><span className="muted">{ago(n.created_at)}</span></span><span className="muted">›</span></Link>)}
     {l?.some(n => !n.read) && <button onClick={async () => { await api("/me/notifications/read", { method: "POST" }); setL(l.map(n => ({ ...n, read: true }))); }}>Tout marquer comme lu</button>}</main>);
 }
