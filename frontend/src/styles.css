@@ -311,3 +311,5 @@ button:active,.pcard:active,.quick a:active,.cat:active,.card:active,.menu a:act
 .bud{display:flex;align-items:center;gap:8px;margin:8px 0}.bud input{flex:1;min-width:0;margin:0;text-align:right}
 .pr0:not(.solo){flex-direction:column;align-items:flex-start;gap:8px}.pr0:not(.solo) .tx{padding-top:0;color:var(--ink,#0B1440)}.pr0:not(.solo) .tx h2{overflow-wrap:anywhere}
 .bud input{flex:0 1 150px;padding:9px 12px;height:auto}.bud{justify-content:flex-end}.bud>.muted:first-child{margin-right:auto}
+.cat span svg{width:26px;height:26px;fill:none;stroke:#0A1F6E;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.cat span{font-size:0}
+.cat span svg{width:32px;height:32px;stroke-width:1.6}
