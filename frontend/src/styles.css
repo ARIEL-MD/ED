@@ -322,3 +322,4 @@ nav{left:12px;right:12px;width:auto;max-width:56rem;margin:0 auto;transform:tran
 .quick{gap:16px}.quick a,.quick button{padding-block:20px}
 .cards{grid-template-columns:repeat(auto-fill,minmax(min(100%,26rem),1fr));column-gap:16px}
 }
+.cat span svg.ci{fill:currentColor;stroke:none;width:36px;height:36px}@media (min-width:700px){.cat span svg.ci{width:44px;height:44px}}
