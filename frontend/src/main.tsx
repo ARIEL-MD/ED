@@ -26,7 +26,7 @@ function Shell({ children }: { children: JSX.Element }) {
   const parts = pathname.split("/").filter(Boolean); const deep = parts.length > 1;
   const title = root ? (r === "admin" ? "Administration" : r === "stylist" ? "Demandes" : "") : titles[parts[0]] || "";
   const back = () => (window.history.state?.idx > 0 ? nav(-1) : nav("/"));
-  return (<div className={"app" + (r === "admin" ? " adm" : "")}>{title && <div className="topbar">{deep && <button className="back" aria-label="Retour" onClick={back}>‹</button>}<h1 className="tt">{title}</h1></div>}<div className="body">{children}</div></div>);
+  return (<div className={"app" + (r === "admin" ? " adm" : "")}>{title && <div className="topbar">{(deep || parts[0] === "favorites" || (parts[0] === "notifications" && r === "client")) && <button className="back" aria-label="Retour" onClick={back}>‹</button>}<h1 className="tt">{title}</h1></div>}<div className="body">{children}</div></div>);
 }
 // Un compte garde son type : un professionnel n'accède pas aux écrans client, et inversement
 const Guard = ({ children, only }: { children: JSX.Element; only?: "client" | "stylist" }) =>
