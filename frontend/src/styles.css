@@ -313,3 +313,6 @@ button:active,.pcard:active,.quick a:active,.cat:active,.card:active,.menu a:act
 .bud input{flex:0 1 150px;padding:9px 12px;height:auto}.bud{justify-content:flex-end}.bud>.muted:first-child{margin-right:auto}
 .cat span svg{width:26px;height:26px;fill:none;stroke:#0A1F6E;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.cat span{font-size:0}
 .cat span svg{width:32px;height:32px;stroke-width:1.6}
+/* barre du bas stable au défilement (WebView Android) */
+html,body{overscroll-behavior:none}
+nav{left:12px;right:12px;width:auto;max-width:56rem;margin:0 auto;transform:translateZ(0);-webkit-transform:translateZ(0);will-change:transform;bottom:calc(10px + env(safe-area-inset-bottom))}
