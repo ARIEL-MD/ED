@@ -3,6 +3,16 @@ import { db } from "../db";
 export const discoverRoutes = Router();
 const uuid = /^[0-9a-f-]{36}$/i;
 discoverRoutes.get("/categories", async (_q, res) => res.json((await db.query("SELECT id,name FROM categories WHERE active ORDER BY id")).rows));
+// Prestations des professionnels, pour l'accueil (filtre facultatif par catégorie)
+discoverRoutes.get("/services", async (req, res) => {
+  const cat = typeof req.query.category === "string" ? req.query.category.trim() : "";
+  const r = await db.query(
+    `SELECT sv.id, sv.name, sv.category, sv.price_fcfa, sv.duration_min, sv.photo_url, s.user_id stylist_id, u.name stylist_name,
+      u.avatar_url, s.cover_url, s.salon_name, s.city, s.district, s.certified
+     FROM services sv JOIN stylists s ON s.user_id=sv.stylist_id AND s.approved JOIN users u ON u.id=s.user_id AND NOT u.suspended
+     WHERE ($1='' OR sv.category ILIKE $1) ORDER BY s.certified DESC, sv.photo_url IS NULL, sv.price_fcfa LIMIT 24`, [cat]);
+  res.json(r.rows);
+});
 // Recherche par proximité (formule de haversine, sans extension PostGIS)
 discoverRoutes.get("/stylists/nearby", async (req, res) => {
   const lat = Number(req.query.lat), lng = Number(req.query.lng), km = Math.min(Number(req.query.km) || 10, 50);
