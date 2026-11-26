@@ -25,9 +25,10 @@ const catIcon = (n: string) => { const k = n.toLowerCase();
     : k.includes("manu") || k.includes("ongl") ? <><path d="M9.5 2h5v6h-5z" /><path d="M7 11a2 2 0 012-2h6a2 2 0 012 2v9a2 2 0 01-2 2H9a2 2 0 01-2-2z" /><rect x="9" y="12" width="1.6" height="6.5" rx=".8" fill="#fff" /></>
     : k.includes("pédi") || k.includes("pedi") ? <><rect x="6.5" y="2.5" width="4" height="11" rx="2" /><rect x="13.5" y="2.5" width="4" height="11" rx="2" /><path d="M2.5 13h19c0 4.800-3.200 7.500-7 7.500h-5c-3.800 0-7-2.700-7-7.500z" /><circle cx="12" cy="9" r=".1" /></>
     : k.includes("maqu") ? <><path d="M10 11V6l4-3v8z" /><path d="M8.500 11.500h7v3h-7z" /><path d="M8 15.500h8V21H8z" /></>
-    : k.includes("soin") || k.includes("mass") ? <><path d="M12 3.500c2.800 2.700 3.200 6.500 0 11-3.200-4.500-2.800-8.300 0-11z" /><path d="M4.500 8c4.300 0 7.500 2.800 7.500 7.500-4.300 0-7.500-2.800-7.500-7.500zM19.500 8c0 4.700-3.200 7.500-7.500 7.500 0-4.700 3.200-7.500 7.500-7.500z" /><path d="M5 19.500h14" {...R} /></>
-    : k.includes("tress") || k.includes("tiss") ? <><path d="M9 3c3.500 3-3.500 6 0 9s-3.500 6 0 9M15 3c3.500 3-3.500 6 0 9s-3.500 6 0 9" {...R} strokeWidth={2.600} /></>
-    : k.includes("barb") ? <><path d="M3 9.500l14-6 1.500 3.500-14 6z" /><path d="M5 14l-2 6.500 4-3z" /></>
+    : k.includes("visage") ? <><path d="M12 3c-4 0-6.500 3-6.500 7.500S8 21 12 21s6.500-6 6.500-10.500S16 3 12 3z" {...R} /><path d="M9 11h.01M15 11h.01" {...R} strokeWidth={2.800} /><path d="M9.500 15.500c1.500 1.200 3.500 1.200 5 0" {...R} /></>
+    : k.includes("soin") || k.includes("mass") || k.includes("spa") || k.includes("bien") || k.includes("corps") ? <><path d="M12 3.500c2.800 2.700 3.200 6.500 0 11-3.200-4.500-2.800-8.300 0-11z" /><path d="M4.500 8c4.300 0 7.500 2.800 7.500 7.500-4.300 0-7.500-2.800-7.500-7.500zM19.500 8c0 4.700-3.200 7.500-7.500 7.500 0-4.700 3.200-7.500 7.500-7.500z" /><path d="M5 19.500h14" {...R} /></>
+    : k.includes("tress") || k.includes("tiss") || k.includes("extens") || k.includes("perruq") ? <><path d="M9 3c3.500 3-3.500 6 0 9s-3.500 6 0 9M15 3c3.500 3-3.500 6 0 9s-3.500 6 0 9" {...R} strokeWidth={2.600} /></>
+    : k.includes("barb") || k.includes("épil") || k.includes("epil") ? <><path d="M3 9.500l14-6 1.500 3.500-14 6z" /><path d="M5 14l-2 6.500 4-3z" /></>
     : <path d="M12 2l2.400 6.600L21 11l-6.600 2.400L12 20l-2.400-6.600L3 11l6.600-2.400z" />;
   return <svg className="ci" viewBox="0 0 24 24" aria-hidden="true">{g}</svg>; };
 const SEARCH = "M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.5-4.5", BELL = "M6 16V11a6 6 0 0112 0v5l2 2H4zM10 21h4";
