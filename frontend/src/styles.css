@@ -323,3 +323,5 @@ nav{left:12px;right:12px;width:auto;max-width:56rem;margin:0 auto;transform:tran
 .cards{grid-template-columns:repeat(auto-fill,minmax(min(100%,26rem),1fr));column-gap:16px}
 }
 .cat span svg.ci{fill:currentColor;stroke:none;width:36px;height:36px}@media (min-width:700px){.cat span svg.ci{width:44px;height:44px}}
+.cat span i.cico,.cico{display:block;width:44px;height:44px;background:#0A1F6E;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
+@media (min-width:700px){.cat span i.cico{width:54px;height:54px}}

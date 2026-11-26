@@ -2,13 +2,25 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api, fcfa } from "../api";
 import { Certified } from "../ui";
+import icCoiffure from "../assets/icons/coiffure.svg";
+import icManucure from "../assets/icons/manucure.svg";
+import icPedicure from "../assets/icons/pedicure.svg";
+import icMaquillage from "../assets/icons/maquillage.svg";
+import icCils from "../assets/icons/cils.svg";
 interface S { id: string; name: string; avatar_url?: string | null; city: string; district?: string; salon_name?: string | null; certified?: boolean; rating: string; reviews: string; from_price?: number }
 const icon = (d: string) => <svg viewBox="0 0 24 24"><path d={d} /></svg>;
 const PIN = "M12 21s-6-5.2-6-10a6 6 0 0112 0c0 4.8-6 10-6 10zM12 9.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z", HEART = "M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z", CAL = "M5 6h14v14H5zM5 10h14M9 3v4M15 3v4";
 // Icône de catégorie selon son nom (repli : étincelle)
 const R = { fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round" as const };
 // Icônes pleines dessinées pour l'appli (une par catégorie)
+// Illustrations fournies (SVG) : colorées en bleu par masque CSS
+const mask = (u: string) => <i className="cico" style={{ WebkitMaskImage: `url(${u})`, maskImage: `url(${u})` }} />;
 const catIcon = (n: string) => { const k = n.toLowerCase();
+  if (k.includes("coiff")) return mask(icCoiffure);
+  if (k.includes("manu") || k.includes("ongl")) return mask(icManucure);
+  if (k.includes("pédi") || k.includes("pedi")) return mask(icPedicure);
+  if (k.includes("maqu")) return mask(icMaquillage);
+  if (k.includes("cil") || k.includes("sourc") || k.includes("regard")) return mask(icCils);
   const g = k.includes("coiff") ? <><path d="M7.600 8.800L20.500 18.500M7.600 15.200L20.500 5.500" {...R} /><circle cx="5.5" cy="7.5" r="2.7" {...R} /><circle cx="5.5" cy="16.5" r="2.7" {...R} /></>
     : k.includes("manu") || k.includes("ongl") ? <><path d="M9.5 2h5v6h-5z" /><path d="M7 11a2 2 0 012-2h6a2 2 0 012 2v9a2 2 0 01-2 2H9a2 2 0 01-2-2z" /><rect x="9" y="12" width="1.6" height="6.5" rx=".8" fill="#fff" /></>
     : k.includes("pédi") || k.includes("pedi") ? <><rect x="6.5" y="2.5" width="4" height="11" rx="2" /><rect x="13.5" y="2.5" width="4" height="11" rx="2" /><path d="M2.5 13h19c0 4.800-3.200 7.500-7 7.500h-5c-3.800 0-7-2.700-7-7.500z" /><circle cx="12" cy="9" r=".1" /></>
