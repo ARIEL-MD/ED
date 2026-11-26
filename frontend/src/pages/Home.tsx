@@ -7,7 +7,7 @@ import icManucure from "../assets/icons/manucure.svg";
 import icPedicure from "../assets/icons/pedicure.svg";
 import icMaquillage from "../assets/icons/maquillage.svg";
 import icCils from "../assets/icons/cils.svg";
-interface S { id: string; name: string; avatar_url?: string | null; city: string; district?: string; salon_name?: string | null; certified?: boolean; rating: string; reviews: string; from_price?: number }
+interface S { id: string; cover_url?: string | null; name: string; avatar_url?: string | null; city: string; district?: string; salon_name?: string | null; certified?: boolean; rating: string; reviews: string; from_price?: number }
 const icon = (d: string) => <svg viewBox="0 0 24 24"><path d={d} /></svg>;
 const PIN = "M12 21s-6-5.2-6-10a6 6 0 0112 0c0 4.8-6 10-6 10zM12 9.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z", HEART = "M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z", CAL = "M5 6h14v14H5zM5 10h14M9 3v4M15 3v4";
 // Icône de catégorie selon son nom (repli : étincelle)
@@ -36,6 +36,16 @@ function Card({ s }: { s: S }) {
     <div className="pinfo"><b>{s.name}{s.certified && <> <Certified mini /></>}</b><div className="muted">{[s.salon_name, [s.district, s.city].filter(Boolean).join(", ")].filter(Boolean).join(" · ")}{s.from_price ? ` · dès ${fcfa(s.from_price)}` : ""}</div>
       <div className="stars">{Number(s.reviews) > 0 ? <>★ {s.rating} <span>({s.reviews} avis)</span></> : <span className="muted">Nouveau</span>}</div></div><span className="pill">Réserver</span></Link>);
 }
+function Salon({ s }: { s: S }) {
+  const img = s.cover_url || s.avatar_url; const place = [s.district, s.city].filter(Boolean).join(", ");
+  return (<Link className="salon" to={`/stylist/${s.id}`}>
+    <div className="sph" style={img ? { backgroundImage: `url(${img})` } : undefined}>{Number(s.reviews) > 0 ? <span className="rt">★ {s.rating} <small>({s.reviews} avis)</small></span> : <span className="rt new">Nouveau</span>}</div>
+    <div className="sbd"><div className="sid"><i className="sav" style={s.avatar_url ? { backgroundImage: `url(${s.avatar_url})` } : undefined}>{!s.avatar_url && s.name[0]}</i>
+      <div><b>{s.salon_name || s.name}{s.certified && <> <Certified mini /></>}</b><span className="muted">{place}</span></div></div>
+      {s.from_price ? <div className="from">À partir de <b>{fcfa(s.from_price)}</b></div> : <div className="from">&nbsp;</div>}
+      <span className="rbtn">Réserver →</span></div></Link>);
+}
+const GIFT = <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="26" width="48" height="12" rx="3" fill="#F1CF7A" /><rect x="12" y="38" width="40" height="20" rx="3" fill="#D4A03A" /><rect x="28" y="26" width="8" height="32" fill="#FFF3D1" /><path d="M32 26c-6-14-20-12-14-4 3 4 10 4 14 4zM32 26c6-14 20-12 14-4-3 4-10 4-14 4z" fill="#F1CF7A" stroke="#B8860B" strokeWidth="2" strokeLinejoin="round" /></svg>;
 export default function Home() {
   const nav = useNavigate();
   const [cats, setCats] = useState<{ id: number; name: string }[]>([]);
@@ -67,9 +77,9 @@ export default function Home() {
       <div className="cards">{found.map(s => <Card key={s.id} s={s} />)}</div>
       {found.length === 0 && <div className="sec"><b>Aucun résultat</b><div className="muted">Essayez un autre mot, un quartier ou une catégorie.</div></div>}
     </> : <>
-      <div className="hs-t"><h2>Les mieux notés</h2><Link to="/explore">Tout voir</Link></div>
-      <div className="cards">{top.slice(0, 4).map(s => <Card key={s.id} s={s} />)}</div>
-      {top.length > 4 && <><div className="hs-t"><h2>Autres professionnels</h2><Link to="/explore">Tout voir</Link></div><div className="cards">{top.slice(4, 10).map(s => <Card key={s.id} s={s} />)}</div></>}
+      <div className="hs-t gold"><h2>Salons populaires</h2><Link to="/explore">Voir plus →</Link></div>
+      <div className="salons">{top.slice(0, 8).map(s => <Salon key={s.id} s={s} />)}</div>
+      <section className="offer"><div className="gift">{GIFT}</div><div className="ot"><b>Offre spéciale</b><span><strong>-30 %</strong> sur tous les soins visage cette semaine !</span></div><Link to="/explore?category=Soins" className="obtn">Profiter maintenant →</Link></section>
       {top.length === 0 && <div className="sec"><b>Les premières professionnelles arrivent bientôt</b><div className="muted">Revenez très vite, ou lancez une recherche près de chez vous.</div></div>}
     </>}
   </main>);
