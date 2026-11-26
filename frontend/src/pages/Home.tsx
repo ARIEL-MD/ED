@@ -45,7 +45,6 @@ function Salon({ s }: { s: S }) {
       {s.from_price ? <div className="from">À partir de <b>{fcfa(s.from_price)}</b></div> : <div className="from">&nbsp;</div>}
       <span className="rbtn">Réserver →</span></div></Link>);
 }
-const GIFT = <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="26" width="48" height="12" rx="3" fill="#F1CF7A" /><rect x="12" y="38" width="40" height="20" rx="3" fill="#D4A03A" /><rect x="28" y="26" width="8" height="32" fill="#FFF3D1" /><path d="M32 26c-6-14-20-12-14-4 3 4 10 4 14 4zM32 26c6-14 20-12 14-4-3 4-10 4-14 4z" fill="#F1CF7A" stroke="#B8860B" strokeWidth="2" strokeLinejoin="round" /></svg>;
 export default function Home() {
   const nav = useNavigate();
   const [cats, setCats] = useState<{ id: number; name: string }[]>([]);
@@ -79,7 +78,6 @@ export default function Home() {
     </> : <>
       <div className="hs-t gold"><h2>Salons populaires</h2><Link to="/explore">Voir plus →</Link></div>
       <div className="salons">{top.slice(0, 8).map(s => <Salon key={s.id} s={s} />)}</div>
-      <section className="offer"><div className="gift">{GIFT}</div><div className="ot"><b>Offre spéciale</b><span><strong>-30 %</strong> sur tous les soins visage cette semaine !</span></div><Link to="/explore?category=Soins" className="obtn">Profiter maintenant →</Link></section>
       {top.length === 0 && <div className="sec"><b>Les premières professionnelles arrivent bientôt</b><div className="muted">Revenez très vite, ou lancez une recherche près de chez vous.</div></div>}
     </>}
   </main>);
