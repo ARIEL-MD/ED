@@ -357,3 +357,9 @@ button.rbtn{border:0;cursor:pointer;font-family:inherit}
 .svcard .sph{height:110px}.svcard .rt{left:auto;right:10px}.svcard .sbd{gap:3px}.svcard b{font-size:15px}.svcard .muted{font-size:12px}
 @media (min-width:700px){.svcard{flex:none}}
 button.chipc{width:auto;min-height:0;display:inline-flex;align-items:center;margin:0;padding:10px 16px;font-size:14px;font-weight:700;background:#fff;color:var(--rose);border-radius:22px;box-shadow:var(--sh)}button.chipc.on{background:var(--rose);color:#fff}
+/* catégories : 2 rangées qui défilent sur le côté (plus lisible sur téléphone) */
+.cats{display:grid;grid-auto-flow:column;grid-template-rows:repeat(2,auto);grid-auto-columns:max-content;gap:10px 8px;overflow-x:auto;padding:2px 2px 8px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.cats>*{scroll-snap-align:start}
+button.chipc{border:1.5px solid #E1E6F5;box-shadow:none;padding:9px 16px;font-size:14px}
+button.chipc.on{border-color:var(--rose);box-shadow:0 8px 16px -8px rgba(10,31,110,.55)}
+@media (min-width:700px){.cats{display:flex;flex-wrap:wrap;overflow:visible}}
