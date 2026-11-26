@@ -29,6 +29,7 @@ export default function Book() {
   return (<main>
     <h3 className="step"><i>1</i> Prestation</h3>
     <div className="svl">{svs === null ? <Skel n={2} /> : svs.length === 0 ? <p className="muted">Aucune prestation publiée.</p> : svs.map(s => <div key={s.id} role="radio" aria-checked={sv === s.id} tabIndex={0} className={"svr" + (sv === s.id ? " on" : "")} onClick={() => setSv(s.id)} onKeyDown={e => e.key === "Enter" && setSv(s.id)}><span><b>{s.name}</b></span><em>{fcfa(s.price_fcfa)}</em></div>)}</div>
+    {svs !== null && svs.length === 0 ? <div className="sec"><b>Ce professionnel n’a pas encore publié de prestation</b><div className="muted">Vous pourrez réserver dès qu’il en aura ajouté. Revenez bientôt ou choisissez un autre professionnel.</div></div> : <>
     <h3 className="step"><i>2</i> Lieu</h3>
     <div className="seg">{places.map(([v, l]) => <button key={v} type="button" className={place === v ? "on" : ""} onClick={() => setPlace(v)}>{l}</button>)}</div>
     {needAddr && <input placeholder="Adresse (quartier, repère…)" autoComplete="street-address" value={address} onChange={e => setAddress(e.target.value)} />}
@@ -50,6 +51,7 @@ export default function Book() {
       <div className="row"><span>Acompte à payer (30 %)</span><b>{fcfa(deposit)}</b></div>
       <div className="row"><span>Reste à régler au professionnel</span><b>{fcfa(total - deposit)}</b></div>
       <p className="muted">Le professionnel doit accepter votre demande avant la prestation. Vous réglerez l’acompte juste après l’envoi.</p></div>}
+</>}
     {err && <p className="err" role="alert">{err}</p>}
-    <button disabled={!ready || busy} onClick={confirm}>{busy ? "Envoi…" : ready ? `Envoyer la demande · acompte ${fcfa(deposit)}` : "Envoyer la demande"}</button></main>);
+    {!(svs !== null && svs.length === 0) && <button disabled={!ready || busy} onClick={confirm}>{busy ? "Envoi…" : ready ? `Envoyer la demande · acompte ${fcfa(deposit)}` : "Envoyer la demande"}</button>}</main>);
 }
