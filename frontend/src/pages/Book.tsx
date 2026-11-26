@@ -12,7 +12,7 @@ export default function Book() {
   const [address, setAddress] = useState(""); const [date, setDate] = useState(""); const [slots, setSlots] = useState<Slot[] | null>(null);
   const [pro, setPro] = useState<Pro | null>(null);
   const [slot, setSlot] = useState(""); const [err, setErr] = useState(""); const [busy, setBusy] = useState(false);
-  useEffect(() => { api<Sv[]>(`/stylists/${id}/services`).then(l => { setSvs(l); setSv(v => (l.some(s => s.id === v) ? v : "")); }).catch(e => setErr(e.message));
+  useEffect(() => { api<Sv[]>(`/stylists/${id}/services`).then(l => { setSvs(l); setSv(v => (l.some(s => s.id === v) ? v : l.length === 1 ? l[0].id : "")); }).catch(e => setErr(e.message));
     api<Pro>(`/stylists/${id}`).then(p => { setPro(p); if (!p.home_service && p.salon_service) setPlace("salon"); }).catch(() => {}); }, [id]);
   useEffect(() => { setSlot(""); setSlots(null); if (sv && date) api<Slot[]>(`/stylists/${id}/slots?date=${date}&serviceId=${sv}`).then(setSlots).catch(e => { setErr(e.message); setSlots([]); }); }, [sv, date, id]);
   const days = [...Array(14)].map((_, i) => { const d = new Date(); d.setUTCDate(d.getUTCDate() + i); return d; });
@@ -35,9 +35,10 @@ export default function Book() {
     <h3 className="step"><i>3</i> Date et heure</h3>
     <div className="calw"><div className="mo2">{months}</div><div className="cal">{days.map(d => { const iso = d.toISOString().slice(0, 10);
       return <button type="button" key={iso} aria-pressed={date === iso} className={"cd" + (date === iso ? " on" : "")} onClick={() => setDate(iso)}><small>{d.toLocaleDateString("fr-FR", { weekday: "narrow", timeZone: "UTC" })}</small><b>{d.getUTCDate()}</b></button>; })}</div></div>
-    {!(sv && date) && <p className="muted">Choisissez une prestation et un jour pour voir les horaires.</p>}
+    {!sv && <p className="muted">Choisissez d’abord une prestation (étape 1) pour voir les heures.</p>}
+    {sv && !date && <p className="muted">Choisissez un jour pour voir les heures disponibles.</p>}
     {sv && date && slots === null && <Skel n={1} />}
-    {slots && slots.length === 0 && <p className="muted">Aucun créneau ce jour-là. Essayez un autre jour.</p>}
+    {slots && slots.length === 0 && <p className="muted">Aucune heure disponible ce jour-là. Essayez un autre jour.</p>}
     <div className="slots">{slots?.map(s => <button key={s.start} disabled={!s.free} className={slot === s.start ? "on" : ""} onClick={() => setSlot(s.start)}>{s.start.slice(11, 16)}</button>)}</div>
     {ready && cur && <div className="sec recap"><h3>Récapitulatif</h3>
       <div className="row"><span>Prestation</span><b>{cur.name}</b></div>

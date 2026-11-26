@@ -26,7 +26,9 @@ stylistRoutes.get("/:id/slots", async (req, res) => {
   const sv = (await db.query("SELECT duration_min FROM services WHERE id=$1 AND stylist_id=$2", [serviceId, req.params.id])).rows[0];
   if (!sv || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return res.status(400).json({ error: "Paramètres invalides" });
   const wd = new Date(date + "T00:00:00Z").getUTCDay();
-  const av = (await db.query("SELECT start_time,end_time FROM availability WHERE stylist_id=$1 AND weekday=$2", [req.params.id, wd])).rows;
+  let av = (await db.query("SELECT start_time,end_time FROM availability WHERE stylist_id=$1 AND weekday=$2", [req.params.id, wd])).rows;
+  // horaires par défaut (lundi–samedi, 8h–18h) tant que le professionnel n'a rien défini
+  if (!av.length && !(await db.query("SELECT 1 FROM availability WHERE stylist_id=$1 LIMIT 1", [req.params.id])).rows.length && wd !== 0) av = [{ start_time: "08:00:00", end_time: "18:00:00" }];
   const taken = (await db.query(
     "SELECT starts_at,ends_at FROM bookings WHERE stylist_id=$1 AND status IN('pending','accepted') AND starts_at::date=$2::date", [req.params.id, date])).rows;
   const out: { start: string; free: boolean }[] = [];

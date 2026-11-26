@@ -347,3 +347,8 @@ html,body{overflow-x:hidden;max-width:100%}
 .body main{overflow-x:clip;max-width:100%}
 .salons{margin:0;padding-inline:0;max-width:100%;box-sizing:border-box;overscroll-behavior-x:contain}
 .sbar{max-width:100%;box-sizing:border-box}
+.cats{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}.cats::-webkit-scrollbar{display:none}
+.chipc{flex:none;background:#fff;color:var(--rose);font-weight:700;font-size:14px;padding:10px 16px;border-radius:22px;box-shadow:var(--sh);text-decoration:none;white-space:nowrap}
+@media (min-width:700px){.cats{flex-wrap:wrap;overflow:visible}}
+button.rbtn{border:0;cursor:pointer;font-family:inherit}
+.sheet .svl{display:grid;gap:8px;margin:12px 0}.sheet .svr{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;background:#F4F6FC;color:var(--ink);border:1.5px solid transparent;border-radius:16px;padding:14px;font:inherit;box-shadow:none}

@@ -2,55 +2,32 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api, fcfa } from "../api";
 import { Certified } from "../ui";
-import icCoiffure from "../assets/icons/coiffure.svg";
-import icManucure from "../assets/icons/manucure.svg";
-import icPedicure from "../assets/icons/pedicure.svg";
-import icMaquillage from "../assets/icons/maquillage.svg";
-import icCils from "../assets/icons/cils.svg";
 interface S { id: string; cover_url?: string | null; name: string; avatar_url?: string | null; city: string; district?: string; salon_name?: string | null; certified?: boolean; rating: string; reviews: string; from_price?: number }
 const icon = (d: string) => <svg viewBox="0 0 24 24"><path d={d} /></svg>;
 const PIN = "M12 21s-6-5.2-6-10a6 6 0 0112 0c0 4.8-6 10-6 10zM12 9.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z", HEART = "M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z", CAL = "M5 6h14v14H5zM5 10h14M9 3v4M15 3v4";
 // Icône de catégorie selon son nom (repli : étincelle)
-const R = { fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round" as const };
-// Icônes pleines dessinées pour l'appli (une par catégorie)
-// Illustrations fournies (SVG) : colorées en bleu par masque CSS
-const mask = (u: string) => <i className="cico" style={{ WebkitMaskImage: `url(${u})`, maskImage: `url(${u})` }} />;
-const catIcon = (n: string) => { const k = n.toLowerCase();
-  if (k.includes("coiff")) return mask(icCoiffure);
-  if (k.includes("manu") || k.includes("ongl")) return mask(icManucure);
-  if (k.includes("pédi") || k.includes("pedi")) return mask(icPedicure);
-  if (k.includes("maqu")) return mask(icMaquillage);
-  if (k.includes("cil") || k.includes("sourc") || k.includes("regard")) return mask(icCils);
-  const g = k.includes("coiff") ? <><path d="M7.600 8.800L20.500 18.500M7.600 15.200L20.500 5.500" {...R} /><circle cx="5.5" cy="7.5" r="2.7" {...R} /><circle cx="5.5" cy="16.5" r="2.7" {...R} /></>
-    : k.includes("manu") || k.includes("ongl") ? <><path d="M9.5 2h5v6h-5z" /><path d="M7 11a2 2 0 012-2h6a2 2 0 012 2v9a2 2 0 01-2 2H9a2 2 0 01-2-2z" /><rect x="9" y="12" width="1.6" height="6.5" rx=".8" fill="#fff" /></>
-    : k.includes("pédi") || k.includes("pedi") ? <><rect x="6.5" y="2.5" width="4" height="11" rx="2" /><rect x="13.5" y="2.5" width="4" height="11" rx="2" /><path d="M2.5 13h19c0 4.800-3.200 7.500-7 7.500h-5c-3.800 0-7-2.700-7-7.500z" /><circle cx="12" cy="9" r=".1" /></>
-    : k.includes("maqu") ? <><path d="M10 11V6l4-3v8z" /><path d="M8.500 11.500h7v3h-7z" /><path d="M8 15.500h8V21H8z" /></>
-    : k.includes("visage") ? <><path d="M12 3c-4 0-6.500 3-6.500 7.500S8 21 12 21s6.500-6 6.500-10.500S16 3 12 3z" {...R} /><path d="M9 11h.01M15 11h.01" {...R} strokeWidth={2.800} /><path d="M9.500 15.500c1.500 1.200 3.500 1.200 5 0" {...R} /></>
-    : k.includes("soin") || k.includes("mass") || k.includes("spa") || k.includes("bien") || k.includes("corps") ? <><path d="M12 3.500c2.800 2.700 3.200 6.500 0 11-3.200-4.500-2.800-8.300 0-11z" /><path d="M4.500 8c4.300 0 7.500 2.800 7.500 7.500-4.300 0-7.500-2.800-7.500-7.500zM19.500 8c0 4.700-3.200 7.500-7.500 7.500 0-4.700 3.200-7.500 7.500-7.500z" /><path d="M5 19.500h14" {...R} /></>
-    : k.includes("tress") || k.includes("tiss") || k.includes("extens") || k.includes("perruq") ? <><path d="M9 3c3.500 3-3.500 6 0 9s-3.500 6 0 9M15 3c3.500 3-3.500 6 0 9s-3.500 6 0 9" {...R} strokeWidth={2.600} /></>
-    : k.includes("barb") || k.includes("épil") || k.includes("epil") ? <><path d="M3 9.500l14-6 1.500 3.500-14 6z" /><path d="M5 14l-2 6.500 4-3z" /></>
-    : <path d="M12 2l2.400 6.600L21 11l-6.600 2.400L12 20l-2.400-6.600L3 11l6.600-2.400z" />;
-  return <svg className="ci" viewBox="0 0 24 24" aria-hidden="true">{g}</svg>; };
 const SEARCH = "M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.5-4.5", BELL = "M6 16V11a6 6 0 0112 0v5l2 2H4zM10 21h4";
 function Card({ s }: { s: S }) {
   return (<Link className="pcard" to={`/stylist/${s.id}`}><div className="av img" style={s.avatar_url ? { backgroundImage: `url(${s.avatar_url})` } : undefined}>{!s.avatar_url && s.name[0]}</div>
     <div className="pinfo"><b>{s.name}{s.certified && <> <Certified mini /></>}</b><div className="muted">{[s.salon_name, [s.district, s.city].filter(Boolean).join(", ")].filter(Boolean).join(" · ")}{s.from_price ? ` · dès ${fcfa(s.from_price)}` : ""}</div>
       <div className="stars">{Number(s.reviews) > 0 ? <>★ {s.rating} <span>({s.reviews} avis)</span></> : <span className="muted">Nouveau</span>}</div></div><span className="pill">Réserver</span></Link>);
 }
-function Salon({ s }: { s: S }) {
+function Salon({ s, onBook }: { s: S; onBook: (s: S) => void }) {
   const img = s.cover_url || s.avatar_url; const place = [s.district, s.city].filter(Boolean).join(", ");
   return (<Link className="salon" to={`/stylist/${s.id}`}>
     <div className="sph" style={img ? { backgroundImage: `url(${img})` } : undefined}>{Number(s.reviews) > 0 ? <span className="rt">★ {s.rating} <small>({s.reviews} avis)</small></span> : <span className="rt new">Nouveau</span>}</div>
     <div className="sbd"><div className="sid"><i className="sav" style={s.avatar_url ? { backgroundImage: `url(${s.avatar_url})` } : undefined}>{!s.avatar_url && s.name[0]}</i>
       <div><b>{s.salon_name || s.name}{s.certified && <> <Certified mini /></>}</b><span className="muted">{place}</span></div></div>
       {s.from_price ? <div className="from">À partir de <b>{fcfa(s.from_price)}</b></div> : <div className="from">&nbsp;</div>}
-      <span className="rbtn">Réserver →</span></div></Link>);
+      <button type="button" className="rbtn" onClick={e => { e.preventDefault(); e.stopPropagation(); onBook(s); }}>Réserver →</button></div></Link>);
 }
 export default function Home() {
   const nav = useNavigate();
   const [cats, setCats] = useState<{ id: number; name: string }[]>([]);
   const [top, setTop] = useState<S[]>([]);
   const [me, setMe] = useState("");
+  const [bk, setBk] = useState<S | null>(null); const [svs, setSvs] = useState<{ id: string; name: string; price_fcfa: number; duration_min?: number }[] | null>(null);
+  const openBook = (s: S) => { setBk(s); setSvs(null); api<NonNullable<typeof svs>>(`/stylists/${s.id}/services`).then(setSvs).catch(() => setSvs([])); };
   const [q, setQ] = useState(""); const [found, setFound] = useState<S[] | null>(null);
   useEffect(() => { api<typeof cats>("/categories").then(setCats).catch(() => {}); api<S[]>("/stylists").then(setTop).catch(() => {}); api<{ name: string }>("/me").then(m => setMe((m.name || "").split(" ")[0])).catch(() => {}); }, []);
   // recherche en direct, avec un petit délai pour ne pas interroger le serveur à chaque lettre
@@ -68,18 +45,23 @@ export default function Home() {
       </form>
       <Link className="sbtn" to="/notifications" aria-label="Notifications">{icon(BELL)}</Link>
     </div>
-    {found === null && <p className="hi">{me ? `Bonjour ${me} 👋` : "Bienvenue"}</p>}
+    {found === null && <p className="hi">{me ? `Bonjour ${me}` : "Bienvenue"}</p>}
     {found === null && <div className="quick"><Link to="/explore"><span>{icon(PIN)}</span>Près de moi</Link><Link to="/favorites"><span>{icon(HEART)}</span>Favoris</Link><Link to="/bookings"><span>{icon(CAL)}</span>Mes RDV</Link></div>}
     <h2>Catégories</h2>
-    <div className="scroll cats">{cats.map(c => <Link className="cat" key={c.id} to={`/explore?category=${encodeURIComponent(c.name)}`}><span>{catIcon(c.name)}</span>{c.name}</Link>)}</div>
+    <div className="scroll cats">{cats.map(c => <Link className="chipc" key={c.id} to={`/explore?category=${encodeURIComponent(c.name)}`}>{c.name}</Link>)}</div>
     {found !== null ? <>
       <p className="muted">{found.length} résultat{found.length > 1 ? "s" : ""}</p>
       <div className="cards">{found.map(s => <Card key={s.id} s={s} />)}</div>
       {found.length === 0 && <div className="sec"><b>Aucun résultat</b><div className="muted">Essayez un autre mot, un quartier ou une catégorie.</div></div>}
     </> : <>
       <div className="hs-t gold"><h2>Salons populaires</h2><Link to="/explore">Voir plus →</Link></div>
-      <div className="salons">{top.slice(0, 8).map(s => <Salon key={s.id} s={s} />)}</div>
+      <div className="salons">{top.slice(0, 8).map(s => <Salon key={s.id} s={s} onBook={openBook} />)}</div>
       {top.length === 0 && <div className="sec"><b>Les premières professionnelles arrivent bientôt</b><div className="muted">Revenez très vite, ou lancez une recherche près de chez vous.</div></div>}
     </>}
+    {bk && <div className="modal" onClick={() => setBk(null)}><div className="sheet" role="dialog" aria-label="Choisir une prestation" onClick={e => e.stopPropagation()}>
+      <h3>Que souhaitez-vous réserver ?</h3><div className="muted">{bk.salon_name || bk.name}</div>
+      <div className="svl">{svs === null ? <p className="muted">Chargement…</p> : svs.length === 0 ? <p className="muted">Ce professionnel n’a pas encore publié de prestation.</p> : svs.map(v => <button key={v.id} type="button" className="svr" onClick={() => nav(`/book/${bk.id}?service=${v.id}`)}><span><b>{v.name}</b>{v.duration_min ? <small className="muted"> · {v.duration_min} min</small> : null}</span><b>{fcfa(v.price_fcfa)}</b></button>)}</div>
+      <Link className="muted" to={`/stylist/${bk.id}`} onClick={() => setBk(null)}>Voir le profil du professionnel</Link>
+    </div></div>}
   </main>);
 }

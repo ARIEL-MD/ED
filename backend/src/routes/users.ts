@@ -14,7 +14,10 @@ authRoutes.post("/register", async (req, res) => {
   try {
     const u = await db.query("INSERT INTO users(role,name,phone,password_hash,city,district) VALUES($1,$2,$3,$4,$5,$6) RETURNING id",
       [role, name, phone, await bcrypt.hash(password, 12), city.trim(), district.trim()]);
-    if (role === "stylist") await db.query("INSERT INTO stylists(user_id,city,approved,district,salon_name) VALUES($1,$2,true,$3,$4)", [u.rows[0].id, city.trim(), district.trim(), salonName?.trim() || null]);
+    if (role === "stylist") {
+      await db.query("INSERT INTO stylists(user_id,city,approved,district,salon_name) VALUES($1,$2,true,$3,$4)", [u.rows[0].id, city.trim(), district.trim(), salonName?.trim() || null]);
+      await db.query("INSERT INTO availability(stylist_id,weekday,start_time,end_time) SELECT $1,d,'08:00','18:00' FROM generate_series(1,6) d", [u.rows[0].id]);
+    }
     res.json({ token: sign(u.rows[0].id, role), role });
   } catch { res.status(409).json({ error: "Ce numéro est déjà utilisé" }); }
 });
