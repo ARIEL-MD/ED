@@ -60,3 +60,7 @@ L'API GitHub publique fonctionne sans jeton :
 - Inscription : Nom + Prénom (enregistrés ensemble dans `users.name`, prénom en premier) ; pour une professionnelle : nom du salon (facultatif, `stylists.salon_name`), ville et quartier précis (`stylists.district`).
 - Quelques écrans gardent un vocabulaire au féminin (voir README).
 - Coûts estimés : ~40 $ la première année pour démarrer ; 60 à 150 $/mois avec des milliers d'utilisateurs actifs (SMS et photos pèsent le plus).
+
+## Données de démonstration (maquette)
+5 salons fictifs (téléphones `0700000001` à `0700000005`, comptes non connectables) et 14 prestations avec images générées (`frontend/public/demo/*.jpg`, servies sur `/demo/…`). Pas de faux avis.
+Pour les retirer (Neon, `run_sql`) : `DELETE FROM users WHERE phone LIKE '07000000%';` (supprime en cascade profils, prestations, horaires, photos). Les images peuvent ensuite être supprimées du dossier `frontend/public/demo`.
