@@ -5,7 +5,7 @@ import { toast, Skel } from "../ui";
 interface Sv { id: string; name: string; price_fcfa: number; duration_min?: number }
 interface Slot { start: string; free: boolean }
 interface Pro { home_service: boolean; salon_service: boolean; travel_fee_fcfa: number; accepts_cash: boolean }
-const PLACES: [string, string][] = [["home", "Domicile"], ["office", "Bureau"], ["salon", "Salon"]];
+const PLACES: [string, string][] = [["home", "Domicile"], ["salon", "Salon"]];
 export default function Book() {
   const { id } = useParams(); const nav = useNavigate();
   const [svs, setSvs] = useState<Sv[] | null>(null); const [sv, setSv] = useState(useSearchParams()[0].get("service") || ""); const [place, setPlace] = useState("home");

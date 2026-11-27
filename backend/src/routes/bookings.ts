@@ -3,7 +3,7 @@ import { z } from "zod";
 import { db, notify } from "../db";
 import { auth, AuthReq } from "../auth";
 export const bookingRoutes = Router();
-const body = z.object({ stylistId: z.string().uuid(), serviceId: z.string().uuid(), place: z.enum(["home", "office", "salon"]),
+const body = z.object({ stylistId: z.string().uuid(), serviceId: z.string().uuid(), place: z.enum(["home", "salon"]),
   address: z.string().optional(), startsAt: z.string().datetime() });
 bookingRoutes.post("/", auth("client"), async (req: AuthReq, res) => {
   const p = body.safeParse(req.body);
