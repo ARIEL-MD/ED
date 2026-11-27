@@ -314,7 +314,7 @@ button:active,.pcard:active,.quick a:active,.cat:active,.card:active,.menu a:act
 .cat span svg{width:26px;height:26px;fill:none;stroke:#0A1F6E;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.cat span{font-size:0}
 .cat span svg{width:32px;height:32px;stroke-width:1.6}
 /* barre du bas stable au défilement (WebView Android) */
-html,body{overscroll-behavior:none}
+
 nav{left:12px;right:12px;width:auto;max-width:56rem;margin:0 auto;transform:translateZ(0);-webkit-transform:translateZ(0);will-change:transform;bottom:calc(10px + env(safe-area-inset-bottom))}
 @media (min-width:700px){
 .cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:14px;overflow:visible}
@@ -343,7 +343,7 @@ nav{left:12px;right:12px;width:auto;max-width:56rem;margin:0 auto;transform:tran
 .obtn{background:linear-gradient(135deg,#F1CF7A,#D4A03A);color:#0B1440;font-weight:800;font-size:14px;padding:11px 16px;border-radius:24px;text-decoration:none}
 @media (min-width:700px){.salons{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));overflow:visible}.salon{flex:none}.sph{height:150px}}
 /* aucun débordement horizontal : la page et la barre du bas ne glissent plus sur le côté */
-html,body{overflow-x:hidden;max-width:100%}
+body{overflow-x:clip;max-width:100%}
 .body main{overflow-x:clip;max-width:100%}
 .salons{margin:0;padding-inline:0;max-width:100%;box-sizing:border-box;overscroll-behavior-x:contain}
 .sbar{max-width:100%;box-sizing:border-box}
