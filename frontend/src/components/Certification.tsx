@@ -1,3 +1,4 @@
+import { LockIcon } from "./Icons";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api, toDataUrl } from "../api";
@@ -28,7 +29,7 @@ export default function Certification() {
     <label className={"up" + (doc ? " has" : "")} style={doc ? { backgroundImage: `url(${doc})` } : undefined}><input type="file" accept="image/*" className="vh" onChange={pick(setDoc)} />{doc ? "Changer la photo de la pièce" : "Ajouter la photo de la pièce (obligatoire)"}</label>
     <label className={"up" + (selfie ? " has" : "")} style={selfie ? { backgroundImage: `url(${selfie})` } : undefined}><input type="file" accept="image/*" capture="user" className="vh" onChange={pick(setSelfie)} />{selfie ? "Changer le selfie" : "Selfie en tenant la pièce (facultatif, accélère la vérification)"}</label>
     <p className="muted">Délai de réponse : {DELAI} maximum.</p>
-    <div className="lock">🔒 Votre pièce n’est vue que par l’équipe, jamais par les clients, et elle est supprimée dès la décision.</div>
+    <div className="lock"><LockIcon /> Votre pièce n’est vue que par l’équipe, jamais par les clients, et elle est supprimée dès la décision.</div>
     <label className="chk"><input type="checkbox" checked={ok} onChange={e => setOk(e.target.checked)} /> <span>Je confirme que cette pièce est la mienne et j’autorise Esteti-Ma à la vérifier, comme expliqué dans la <Link to="/confidentialite" target="_blank">politique de confidentialité</Link>.</span></label>
     <button disabled={!doc || !ok || busy} onClick={send}>{busy ? "Envoi…" : "Envoyer ma demande"}</button></div>);
 }

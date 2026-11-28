@@ -363,3 +363,36 @@ button.chipc{width:auto;min-height:0;display:inline-flex;align-items:center;marg
 button.chipc{border:1.5px solid #E1E6F5;box-shadow:none;padding:9px 16px;font-size:14px}
 button.chipc.on{border-color:var(--rose);box-shadow:0 8px 16px -8px rgba(10,31,110,.55)}
 @media (min-width:700px){.cats{display:flex;flex-wrap:wrap;overflow:visible}}
+
+/* ===== Passe « unslop » : couleurs unies, bordures fines, rayons et graisses cohérents ===== */
+:root{--sh:none;--r-card:16px;--r-ctl:12px;--r-chip:10px}
+body{font-variant-numeric:tabular-nums}
+b,strong{font-weight:600}
+/* fonds et en-têtes sans dégradé */
+.hdr{background:var(--rose);border-radius:0;box-shadow:none}
+.topbar,.sbar{background:var(--cream)}
+.cv,.cv:not([style]){background:var(--rose)}.cv:not([style])::before{display:none}
+.logo,.pill,.badge,.step i,.cam,.herobtn,button.cd.on,.bar i{background:var(--rose)}
+/* boutons */
+button{background:var(--rose);border-radius:var(--r-ctl);box-shadow:none;font-weight:600;transition:background-color .16s cubic-bezier(.22,1,.36,1),opacity .16s cubic-bezier(.22,1,.36,1)}
+button:hover{background:#0D2A8F}
+button.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}button.ghost:hover{background:var(--cream)}
+button:active,.pcard:active,.quick a:active,.cat:active,.card:active,.menu a:active{transform:none;opacity:.85}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+/* surfaces : trait fin à la place des ombres */
+.card,.sec,.pcard,.salon,.svcard,.quick a,.stats div,.menu a,.acc,.msgrow,.okbox{box-shadow:none;border:1px solid var(--line);border-radius:var(--r-card)}
+.sph .rt,.avatar,.av{box-shadow:none}
+/* puces et filtres */
+.chip,button.chipc{box-shadow:none;border:1px solid var(--line);border-radius:var(--r-chip);font-weight:600;padding:9px 14px}
+button.chipc.on,.chip.on{background:var(--rose);color:#fff;border-color:var(--rose);box-shadow:none}
+.chipc{box-shadow:none}
+/* barre du bas */
+nav{box-shadow:none;border:1px solid var(--line);background:#fff;border-radius:20px}
+nav a{border-radius:14px}
+nav a.active{background:var(--rose);box-shadow:none}
+/* titres de section : une fine règle dorée comme signature */
+.hs-t.gold h2{border-left:3px solid var(--gold);padding-left:10px;font-size:18px;font-weight:600}
+.hs-t a{font-weight:600}
+.sid b,.svcard b,.stats b,.quick a,.rt,.rbtn,.obtn{font-weight:600}
+.ico{vertical-align:-3px;margin-right:4px}
+.lock{display:flex;gap:6px;align-items:flex-start}.lock .ico{flex:none;margin-top:2px}

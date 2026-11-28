@@ -1,3 +1,4 @@
+import { PinIcon } from "../components/Icons";
 import { Villes } from "../villes";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -24,7 +25,7 @@ export default function Profile() {
       {stylist && <div className="cv" style={cover ? { backgroundImage: `url(${cover})` } : undefined}>{!cover && "Ajoutez une photo de couverture"}<Cam label="Changer la photo de couverture" cls="c2" onFile={setCov}>Couverture</Cam></div>}
       <div className={"pr0" + (stylist ? "" : " solo")}>
         <div className="av" style={u.avatar_url ? { backgroundImage: `url(${u.avatar_url})` } : undefined}>{!u.avatar_url && (u.name?.[0] || "")}<Cam label="Changer la photo de profil" cls="a" onFile={setAvatar} /></div>
-        <div className="tx"><h2>{u.name}</h2><div className="muted">{stylist ? "Professionnel(le)" : "Client"}</div>{(u.district || u.city) && <div className="muted loc1">📍 {[u.district, u.city].filter(Boolean).join(", ")}</div>}</div>
+        <div className="tx"><h2>{u.name}</h2><div className="muted">{stylist ? "Professionnel(le)" : "Client"}</div>{(u.district || u.city) && <div className="muted loc1"><PinIcon /> {[u.district, u.city].filter(Boolean).join(", ")}</div>}</div>
       </div>
     </div>
     <div style={{ textAlign: "center" }}>{u.avatar_url && <a className="rm" onClick={delAvatar}>Retirer la photo de profil</a>}{stylist && cover && <> &nbsp; <a className="rm" onClick={delCover}>Retirer la couverture</a></>}</div>

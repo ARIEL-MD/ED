@@ -32,13 +32,12 @@ export default function Home() {
   const nav = useNavigate();
   const [cats, setCats] = useState<{ id: number; name: string }[]>([]);
   const [top, setTop] = useState<S[]>([]);
-  const [me, setMe] = useState("");
   const [cat, setCat] = useState(""); const [prest, setPrest] = useState<Sp[] | null>(null);
   useEffect(() => { setPrest(null); api<Sp[]>(`/services${cat ? `?category=${encodeURIComponent(cat)}` : ""}`).then(setPrest).catch(() => setPrest([])); }, [cat]);
   const [bk, setBk] = useState<S | null>(null); const [svs, setSvs] = useState<{ id: string; name: string; price_fcfa: number; duration_min?: number }[] | null>(null);
   const openBook = (s: S) => { setBk(s); setSvs(null); api<NonNullable<typeof svs>>(`/stylists/${s.id}/services`).then(setSvs).catch(() => setSvs([])); };
   const [q, setQ] = useState(""); const [found, setFound] = useState<S[] | null>(null);
-  useEffect(() => { api<typeof cats>("/categories").then(setCats).catch(() => {}); api<S[]>("/stylists").then(setTop).catch(() => {}); api<{ name: string }>("/me").then(m => setMe((m.name || "").split(" ")[0])).catch(() => {}); }, []);
+  useEffect(() => { api<typeof cats>("/categories").then(setCats).catch(() => {}); api<S[]>("/stylists").then(setTop).catch(() => {}); }, []);
   // recherche en direct, avec un petit délai pour ne pas interroger le serveur à chaque lettre
   useEffect(() => {
     const t = q.trim(); if (!t) { setFound(null); return; }
@@ -54,7 +53,6 @@ export default function Home() {
       </form>
       <Link className="sbtn" to="/notifications" aria-label="Notifications">{icon(BELL)}</Link>
     </div>
-    {found === null && <p className="hi">{me ? `Bonjour ${me}` : "Bienvenue"}</p>}
     {found === null && <div className="quick"><Link to="/explore"><span>{icon(PIN)}</span>Près de moi</Link><Link to="/favorites"><span>{icon(HEART)}</span>Favoris</Link><Link to="/bookings"><span>{icon(CAL)}</span>Mes RDV</Link></div>}
     <h2>Catégories</h2>
     <div className="scroll cats">{[{ id: 0, name: "" }, ...cats].map(c => <button type="button" key={c.id} className={"chipc" + (cat === c.name ? " on" : "")} aria-pressed={cat === c.name} onClick={() => setCat(c.name)}>{c.name || "Toutes"}</button>)}</div>
