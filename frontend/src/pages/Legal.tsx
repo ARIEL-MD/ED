@@ -24,7 +24,7 @@ const CONDITIONS: Sec[] = [
     "Le badge « Certifié » indique que l’équipe a vérifié l’identité du professionnel à partir d’une pièce justificative. Il ne constitue ni un diplôme, ni une garantie de qualité, ni une assurance.",
   ]],
   ["4. Réservation", [
-    "Le client choisit une prestation, un créneau et un lieu (à domicile, au bureau ou en salon, selon ce que le professionnel propose). Pour les lieux hors salon, il indique l’adresse et peut se voir facturer des frais de déplacement fixés par le professionnel.",
+    "Le client choisit une prestation, un créneau et un lieu (à domicile ou en salon, selon ce que le professionnel propose). Pour les lieux hors salon, il indique l’adresse et peut se voir facturer des frais de déplacement fixés par le professionnel.",
     "Une réservation est d’abord une demande. Elle est confirmée uniquement lorsque le professionnel l’accepte ; il peut aussi la refuser. Un créneau confirmé ne peut pas être réservé deux fois. Le client et le professionnel sont informés par notification.",
     "Le client peut annuler une demande en attente ou une réservation acceptée depuis l’onglet « Réservations ».",
   ]],
@@ -43,7 +43,7 @@ const CONDITIONS: Sec[] = [
     "Il est interdit de : usurper l’identité d’une autre personne ; publier des contenus illégaux, injurieux, discriminatoires ou à caractère sexuel ; harceler ou menacer un autre utilisateur ; publier de faux avis ; tenter de contourner la sécurité de l’application ; détourner le paiement d’une réservation créée sur l’application pour éviter la commission.",
   ]],
   ["8. Sécurité lors d’une prestation", [
-    "Lors d’une prestation à domicile ou au bureau, restez prudent(e) : privilégiez un lieu où d’autres personnes sont présentes, prévenez un proche et utilisez la messagerie de l’application pour vos échanges. En cas de danger, contactez les autorités.",
+    "Lors d’une prestation à domicile, restez prudent(e) : privilégiez un lieu où d’autres personnes sont présentes, prévenez un proche et utilisez la messagerie de l’application pour vos échanges. En cas de danger, contactez les autorités.",
   ]],
   ["9. Réclamations", [
     "En cas de problème avec une réservation ou un autre utilisateur, utilisez « Faire une réclamation » dans l’onglet Profil. L’équipe Esteti-Ma examine chaque réclamation et peut prendre les mesures prévues à l’article 10.",
@@ -75,7 +75,7 @@ const CONFIDENTIALITE: Sec[] = [
     "Compte : nom, numéro de téléphone, mot de passe (enregistré sous forme chiffrée, jamais en clair), type de compte, photo de profil si vous en ajoutez une.",
     "Professionnels : présentation, ville, quartier, position et rayon de la zone d’intervention, prestations (prix, durée, description, photos), disponibilités, photos de réalisations et photo de couverture.",
     "Certification (professionnels, facultative) : photo d’une pièce d’identité ou d’un document prouvant votre identité, et éventuellement un selfie.",
-    "Réservations : prestation, date et heure, lieu (domicile, bureau ou salon), adresse indiquée pour les lieux hors salon, montants et statut.",
+    "Réservations : prestation, date et heure, lieu (domicile ou salon), adresse indiquée pour les lieux hors salon, montants et statut.",
     "Paiements : montant, moyen de paiement (Wave ou espèces), référence de transaction et statut. Nous ne conservons ni vos identifiants Wave ni votre code secret.",
     "Échanges : messages avec l’autre partie d’une réservation, avis et notes, favoris, réclamations, notifications.",
     "Position de votre appareil : uniquement si vous utilisez la recherche « près de moi » et acceptez la demande d’autorisation de votre téléphone. Elle sert à trouver les professionnels proches et n’est pas enregistrée.",

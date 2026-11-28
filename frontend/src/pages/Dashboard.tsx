@@ -25,7 +25,7 @@ export default function Dashboard() {
     {l && p.length > 0 && <p className="muted"><b>{p.length}</b> demande{p.length > 1 ? "s" : ""} en attente de votre réponse</p>}
     {l === null && <Skel />}
     {l && p.length === 0 && <Empty title="Aucune nouvelle demande" text="Les demandes de réservation apparaîtront ici." />}
-    {p.map(b => <div className={"card" + (b.id === target ? " hl" : "")} id={"b-" + b.id} key={b.id}><b>{b.service} · {b.client_name}</b><div>{when(b.starts_at)} · {fcfa(b.total_fcfa)}</div><div className="muted">{b.place === "salon" ? "Salon" : `${b.place === "office" ? "Bureau" : "Domicile"} : ${b.address}`}</div>
+    {p.map(b => <div className={"card" + (b.id === target ? " hl" : "")} id={"b-" + b.id} key={b.id}><b>{b.service} · {b.client_name}</b><div>{when(b.starts_at)} · {fcfa(b.total_fcfa)}</div><div className="muted">{b.place === "salon" ? "Salon" : `Domicile : ${b.address}`}</div>
       <div className="two"><button onClick={() => act(`/bookings/${b.id}/respond`, { accept: true }, "Demande acceptée")}>Accepter</button><button className="ghost" onClick={() => refuse(b.id)}>Refuser</button></div>
       <Link to={`/chat/${b.id}`}><button className="ghost mt">Poser une question au client</button></Link></div>)}
     <h2>À venir</h2>{l && a.length === 0 && <Empty title="Aucun rendez-vous accepté" />}

@@ -396,3 +396,10 @@ nav a.active{background:var(--rose);box-shadow:none}
 .sid b,.svcard b,.stats b,.quick a,.rt,.rbtn,.obtn{font-weight:600}
 .ico{vertical-align:-3px;margin-right:4px}
 .lock{display:flex;gap:6px;align-items:flex-start}.lock .ico{flex:none;margin-top:2px}
+
+/* unslop passe 2 : icônes de notification, heures, cases */
+.notif .ni{width:36px;height:36px;border-radius:10px;background:var(--bg2,#EEF1FA);color:var(--navy,#0A1F6E);display:grid;place-items:center;font-size:0;flex:none}
+.notif.unread .ni{background:var(--navy,#0A1F6E);color:#fff}
+input.tm{width:104px;padding:0 8px;text-align:center;font-variant-numeric:tabular-nums}
+input.tm::-webkit-calendar-picker-indicator{display:none}
+input[type=checkbox]{accent-color:#0A1F6E;width:18px;height:18px}
